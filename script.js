@@ -673,7 +673,38 @@
     const reset = (object, spread = false) => { object.size = .5 + Math.random() * .5; object.s = spread ? 1 : 0; object.x = object.y = 0; object.z = spread ? -Math.random() * 20000 : -20000; object.rx = spread ? Math.random() * 360 : 90; object.ry = Math.random() * 2 - 1; object.rz = 0; object.vz = 40 + Math.random() * 10; object.vx = Math.random() * innerWidth * .0025 * (object.index % 2 ? -1 : 1); object.vy = Math.random() * innerHeight * .0025 * (object.index % 3 ? -1 : 1); object.vrx = .25 + Math.random(); object.vry = .25 + Math.random(); paint(object); object.element.classList.remove("is-waiting"); };
     const recycle = (object) => { object.element.classList.add("is-waiting"); active.splice(active.indexOf(object), 1); pool.push(object); };
     const throwObject = (spread = false) => { if (active.length >= 5 || !pool.length) return; const object = pool.splice(Math.floor(Math.random() * pool.length), 1)[0]; reset(object, spread); active.push(object); };
-    const geometry = () => { const box = section.getBoundingClientRect(), face = smiley.getBoundingClientRect(), width = box.width, height = box.height, cx = face.left - box.left + face.width / 2, cy = face.top - box.top + face.height / 2, normal = $(".history-normal-wrapper", section), splitY = normal ? Math.max(cy, Math.min(height, normal.getBoundingClientRect().top - box.top)) : height * .72, columns = innerWidth > 767 ? 12 : 8, gap = width / columns; let d = `M 0 ${height} L ${width} ${height} `; for (let index = 0; index <= columns; index++) d += `M ${gap * index} 0 L ${cx} ${cy} L ${gap * index} ${splitY} V ${height} `; const rowGap = height / columns; for (let index = 1; index < columns; index++) d += `M 0 ${rowGap * index} L ${cx} ${cy} M ${width} ${rowGap * index} L ${cx} ${cy} `; for (let y = splitY; y <= height; y += rowGap) d += `M 0 ${y} H ${width} `; path.setAttribute("d", d); section.style.setProperty("--distortion", Math.hypot(width, (height - cy) / 2) * .14); };
+    const geometry = () => {
+      const box = section.getBoundingClientRect(), face = smiley.getBoundingClientRect();
+      const width = box.width, height = box.height;
+      const cx = face.left - box.left + face.width / 2, cy = face.top - box.top + face.height / 2;
+      const columns = innerWidth > 767 ? 12 : 8, depthSteps = innerWidth > 767 ? 8 : 6;
+      const gap = width / columns;
+      let d = "";
+
+      // Ceiling and floor rays share one vanishing point. No side-wall lines.
+      for (let index = 0; index <= columns; index++) {
+        const x = gap * index;
+        d += `M ${x} 0 L ${cx} ${cy} M ${cx} ${cy} L ${x} ${height} `;
+      }
+
+      // Cross-lines narrow toward the vanishing point to preserve the room depth.
+      for (let index = 0; index < depthSteps; index++) {
+        const depth = index / depthSteps;
+        const eased = 1 - (1 - depth) ** 2;
+        const ceilingLeftX = cx * eased;
+        const ceilingRightX = width + (cx - width) * eased;
+        const ceilingY = cy * eased;
+        d += `M ${ceilingLeftX} ${ceilingY} L ${ceilingRightX} ${ceilingY} `;
+
+        const floorLeftX = cx * (1 - eased);
+        const floorRightX = cx + (width - cx) * eased;
+        const floorY = cy + (height - cy) * eased;
+        d += `M ${floorLeftX} ${floorY} L ${floorRightX} ${floorY} `;
+      }
+
+      path.setAttribute("d", d);
+      section.style.setProperty("--distortion", Math.hypot(width, (height - cy) / 2) * .14);
+    };
     const updateTarget = () => { const box = section.getBoundingClientRect(), start = box.top + scrollY, end = start + box.height + innerHeight, value = scrollY + innerHeight; targetProgress = value < start ? 0 : value > end ? 1 : (value - start) / (end - start); };
     const tick = (time) => { raf = 0; if (!visible) return; smoothProgress += (targetProgress - smoothProgress) * .1; section.style.setProperty("--history-progress", smoothProgress); if (time - lastThrow > throwDelay) { throwObject(); lastThrow = time; throwDelay = 500 + Math.random() * 500; } active.slice().forEach((object) => { object.s = Math.min(1, object.s + .005); object.z += object.vz; object.x += object.vx; object.y += object.vy; object.rx += object.vrx; object.ry += object.vry; if (object.z > 1000) recycle(object); else paint(object); }); raf = requestAnimationFrame(tick); };
     const start = () => { if (visible && !raf) raf = requestAnimationFrame(tick); };
