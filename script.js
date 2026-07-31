@@ -6,40 +6,25 @@
   const clamp = (value, min = 0, max = 1) => Math.max(min, Math.min(max, value));
 
   const projectMedia = [
-    ["Generous Branding", "images/Generous-Slider.DCY9Q-MO.mp4"],
-    ["Hunter Farmer", "images/Hf-Navigation.Gkvt7Etn.mp4"],
-    ["Generous Branding", "images/Generous-Transition.Dysz98iA.mp4"],
-    ["Nod Coding Bootcamp", "images/Nod-Intro.DujLdLjK.mp4"],
-    ["Rudl und Schwarm", "images/Rudl-Transition.CcgAkF6S.mp4"],
-    ["24/7 Artists", "images/247-Foot.CfYyug9d.mp4"],
-    ["Nod Coding Bootcamp", "images/Nod-404.DvJptcy9.mp4"],
-    ["Duten", "images/Duten-Shapes.DvaTdo7l.mp4"],
-    ["Vanguart", "images/Vanguart-Scroll-3.BwmkFszE.mp4"],
-    ["Generous Branding", "images/Generous-Scroll1.0UenKQ_7.mp4"],
-    ["Nod Coding Bootcamp", "images/Nod-Transition.Cgjsr7Jp.mp4"],
-    ["Pantoufle Hôtel", "images/Pantoufle-Clip.BfFhcegb.mp4"],
-    ["Vanguart", "images/Vanguart-Scroll-2.DRw1ZqR4.mp4"],
-    ["24/7 Artists", "images/247-Scroll-1.BpbKKJ7S.mp4"],
-    ["Rudl und Schwarm", "images/Rudl-Scroll.DmL08CDl.mp4"],
-    ["Vanguart", "images/Vanguart-Scroll-1.kd442gP8.mp4"],
-    ["CodePen", "images/Pen-4.BOCLYASq.mp4"],
-    ["Duten", "images/Duten-3D.CnijAj5p.mp4"],
-    ["24/7 Artists", "images/247-Hero.DKz-ABVC.mp4"],
-    ["Duten", "images/Duten-Fluid.t8C3AKXP.mp4"],
-    ["Vanguart", "images/Vanguart-360.DXA8KizZ.mp4"],
-    ["24/7 Artists", "images/247-Scroll-2.eL-R-Y1L.mp4"],
-    ["QBIT Capital", "images/Qbit-Shape.BySbOvpY.mp4"],
-    ["Tissot", "images/Tissot-360.qz0Gq5Ys.mp4"],
-    ["Duten", "images/Duten-Products.D0b17Eb7.mp4"],
-    ["Pantoufle Hôtel", "images/Pantoufle-Transition.CpZVk1ej.mp4"],
-    ["Pantoufle Hôtel", "images/Pantoufle-Button.B5UTdu2U.mp4"],
-    ["Deside Recrutement", "images/Deside-Site.CmhdHL0t.mp4"],
-    ["QBIT Capital", "images/Qbit-Menu.DQBETGn4.mp4"],
-    ["Nod Coding Bootcamp", "images/Nod-Links.De8GBDpL.mp4"],
-    ["Honor Society Films", "images/HS-Site.Br4spn2E.mp4"],
-    ["Nod Coding Bootcamp", "images/Nod-Flower.VBa6NQlZ.mp4"],
-    ["Duten", "images/Duten-Intro.CP3CW1O6.mp4"],
-    ["CodePen", "images/Pen-6.CMyHVvwm.mp4"]
+    ["Editorial Work 01", "images/work/project-01.jpg"],
+    ["Editorial Work 02", "images/work/project-02.jpg"],
+    ["Editorial Work 03", "images/work/project-03.jpg"],
+    ["Editorial Work 04", "images/work/project-04.jpg"],
+    ["Editorial Work 05", "images/work/project-05.jpg"],
+    ["Editorial Work 06", "images/work/project-06.jpg"],
+    ["Editorial Work 07", "images/work/project-07.jpg"],
+    ["Editorial Work 08", "images/work/project-08.jpg"],
+    ["Editorial Work 09", "images/work/project-09.jpg"],
+    ["Editorial Work 10", "images/work/project-10.jpg"],
+    ["Editorial Work 11", "images/work/project-11.jpg"],
+    ["Editorial Work 12", "images/work/project-12.jpg"],
+    ["Editorial Work 13", "images/work/project-13.jpg"],
+    ["Editorial Work 14", "images/work/project-14.jpg"],
+    ["Editorial Work 15", "images/work/project-15.jpg"],
+    ["Editorial Work 16", "images/work/project-16.jpg"],
+    ["Marshall 1962", "images/work/project-17.png"],
+    ["Vinery", "images/work/project-18.png"],
+    ["Aru", "images/work/project-19.png"]
   ];
 
   const archiveImages = [
@@ -92,7 +77,7 @@
       const size = .5 + ((index * 37) % 50) / 100;
       const y = (.5 + ((index * 53) % 50) / 100) * (index % 2 ? -1 : 1);
       const hash = (index * 7919 % 1679616).toString(36).padStart(4, "0").slice(0, 4);
-      return `<article class="work-project" style="--card-size:${size};--card-y:${y}"><video data-src="${src}" muted loop playsinline preload="none"></video><footer><span>${title}</span><span>#${hash} - ${String(index + 1).padStart(4, "0")}/34</span></footer></article>`;
+      return `<article class="work-project" style="--card-size:${size};--card-y:${y}"><img src="${src}" alt="${title}" loading="lazy" decoding="async"><footer><span>${title}</span><span>#${hash} - ${String(index + 1).padStart(4, "0")}/${String(projectMedia.length).padStart(2, "0")}</span></footer></article>`;
     }).join("");
     const workHoldVh = 35;
     $(".work-showcase").style.height = `calc(${projectMedia.length * 50}lvh + ${workHoldVh}lvh)`;
@@ -592,14 +577,14 @@
   }
 
   function initWorkSection() {
-    const section = $(".work-showcase"), stage = $(".work-stage"), videos = $$(".work-project video"), cards = $$(".work-project"), letterCopies = [10, 14, 14, 13];
+    const section = $(".work-showcase"), stage = $(".work-stage"), cards = $$(".work-project"), letterCopies = [10, 14, 14, 13];
     const maskInner = $(".work-mask-inner"), maskOuter = $(".work-mask-outer"), maskGridClip = $(".work-mask-grid-clip"), rowFrequencies = [1, 1.18, .93, 1.12];
     const glyphs = $$("[data-letter]", stage).map((element) => ({ element, row: Number(element.dataset.row || 0), slot: Number(element.dataset.slot || 0) }));
-    const visibleCards = new Set(), playingVideos = new Set(); let raf = 0;
+    const visibleCards = new Set(); let raf = 0;
     const easeIn = (value) => value ** 5;
     const update = () => {
       raf = 0; const rect = section.getBoundingClientRect(), viewport = innerHeight, inView = rect.bottom > 0 && rect.top < viewport; stage.classList.toggle("is-active", inView);
-      if (!inView) { visibleCards.forEach((index) => { cards[index].style.opacity = "0"; cards[index].style.visibility = "hidden"; }); visibleCards.clear(); playingVideos.forEach((index) => videos[index].pause()); playingVideos.clear(); return; }
+      if (!inView) { visibleCards.forEach((index) => { cards[index].style.opacity = "0"; cards[index].style.visibility = "hidden"; }); visibleCards.clear(); return; }
       const holdDistance = viewport * (Number(section.style.getPropertyValue("--work-hold-vh")) || 0) / 100;
       const progress = clamp((viewport * .25 - rect.top) / Math.max(1, rect.height - viewport * .5 - holdDistance));
       const intro = clamp(progress / .075), outro = clamp((progress - .925) / .075);
@@ -626,8 +611,6 @@
       const galleryStart = .085, galleryEnd = .925, centresSpan = galleryEnd - galleryStart, nearest = Math.round(clamp((progress - galleryStart) / centresSpan) * (projectMedia.length - 1)), nextActive = progress < galleryStart || progress > galleryEnd ? -1 : nearest, nextVisible = new Set();
       if (nextActive >= 0) for (let index = Math.max(0, nearest - 1); index <= Math.min(projectMedia.length - 1, nearest + 1); index++) { const centre = galleryStart + (index + .5) / projectMedia.length * centresSpan, halfTravel = centresSpan / projectMedia.length * 1.08, cardProgress = clamp((centre - progress) / halfTravel, -1, 1), visible = Math.abs(cardProgress) < .999, card = cards[index]; card.style.setProperty("--card-progress", String(cardProgress)); card.style.opacity = visible ? "1" : "0"; card.style.visibility = visible ? "visible" : "hidden"; card.style.pointerEvents = Math.abs(cardProgress) < .35 ? "auto" : "none"; if (visible) nextVisible.add(index); }
       visibleCards.forEach((index) => { if (!nextVisible.has(index)) { cards[index].style.opacity = "0"; cards[index].style.visibility = "hidden"; cards[index].style.pointerEvents = "none"; } }); visibleCards.clear(); nextVisible.forEach((index) => visibleCards.add(index));
-      playingVideos.forEach((index) => { if (!nextVisible.has(index)) { videos[index].pause(); playingVideos.delete(index); } });
-      nextVisible.forEach((index) => { if (!playingVideos.has(index)) { const video = videos[index]; if (!video.src) { video.src = video.dataset.src || ""; video.load(); } video.play().catch(() => {}); playingVideos.add(index); } });
     };
     const requestUpdate = () => { if (!raf) raf = requestAnimationFrame(update); };
     addEventListener("scroll", requestUpdate, { passive: true }); addEventListener("resize", requestUpdate); requestUpdate();

@@ -84,7 +84,7 @@
 .work-letter-row span.is-foreground{z-index:3}
 .work-letter-row span:before{position:absolute;inset:0;z-index:-1;color:#FF2D2D;opacity:min(var(--work-state)*2,1);transform:scale(1.05,1.02) translate3d(calc(var(--head)*.1rem*var(--work-state)*var(--work-state)),0,0);transform-origin:calc(50% - var(--head)*50%) -50%;content:attr(data-letter)}
 .work-project{--card-progress:1;position:absolute;top:50%;left:50%;z-index:2;width:min(51.2vw,760px);margin:0;background:var(--ink);color:var(--red);transform:rotateY(calc(var(--card-progress) * -20deg)) translate3d(calc(var(--card-progress) * (50vw + 100%) - 50%),calc(var(--card-y) * 50% - 50%),calc(var(--card-progress) * var(--card-progress) * -5rem)) scale(var(--card-size));transform-origin:center;will-change:transform,opacity;pointer-events:none}
-.work-project video{display:none}
+.work-project img{display:block;width:100%;aspect-ratio:5/3;object-fit:cover;background:#FF2D2D}
 .work-project footer{display:flex;justify-content:space-between;gap:1rem;padding:.55rem .1rem 0;color:var(--red);font:400 7px/1.15 "Fraktion Mono",monospace;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
 .work-mask{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden;scale:var(--mask-scale);transform-origin:50% 50%;will-change:scale}
 .work-mask svg{display:block;width:100%;height:100%}
