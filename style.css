@@ -83,15 +83,28 @@
 .work-letter-row span{--head:calc((var(--letter-progress) - .5) * -2);--ahead:calc(var(--head) * var(--head));position:absolute;top:var(--letter-top);left:50%;z-index:1;line-height:.85;color:var(--red);transform:translate(-50%,-50%) rotateY(calc(var(--head) * -10deg * var(--work-state))) translate3d(calc(var(--head) * 50vw * var(--work-state)),calc(var(--letter-y) * 50% * var(--ahead) * var(--work-state)),0);transform-origin:center;will-change:transform}
 .work-letter-row span.is-foreground{z-index:3}
 .work-letter-row span:before{position:absolute;inset:0;z-index:-1;color:#FF2D2D;opacity:min(var(--work-state)*2,1);transform:scale(1.05,1.02) translate3d(calc(var(--head)*.1rem*var(--work-state)*var(--work-state)),0,0);transform-origin:calc(50% - var(--head)*50%) -50%;content:attr(data-letter)}
-.work-project{--card-progress:1;position:absolute;top:50%;left:50%;z-index:2;width:min(51.2vw,760px);margin:0;background:var(--ink);color:var(--red);transform:rotateY(calc(var(--card-progress) * -20deg)) translate3d(calc(var(--card-progress) * (50vw + 100%) - 50%),calc(var(--card-y) * 50% - 50%),calc(var(--card-progress) * var(--card-progress) * -5rem)) scale(var(--card-size));transform-origin:center;will-change:transform,opacity;pointer-events:none}
-.work-project img{display:block;width:100%;aspect-ratio:5/3;object-fit:cover;background:#FF2D2D}
-.work-project footer{display:flex;justify-content:space-between;gap:1rem;padding:.55rem .1rem 0;color:var(--red);font:400 7px/1.15 "Fraktion Mono",monospace;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.work-project{--card-progress:1;position:absolute;top:50%;left:50%;z-index:2;max-width:calc(100vw - 3rem);max-height:76lvh;margin:0;background:transparent;color:#FF2D2D;transform:rotateY(calc(var(--card-progress) * -20deg)) translate3d(calc(var(--card-progress) * (50vw + 100%) - 50%),calc(-50% + var(--card-y) * 8lvh),calc(var(--card-progress) * var(--card-progress) * -5rem)) scale(var(--card-size));transform-origin:center;will-change:transform,opacity;pointer-events:none}
+.work-project-portrait{width:min(28vw,430px)}
+.work-project-square{width:min(38vw,560px)}
+.work-project-landscape{width:min(51.2vw,760px)}
+.work-project-featured{width:min(51.2vw,760px)}
+.work-project-inner{--frame-size:clamp(6px,.55vw,10px);width:fit-content;max-width:100%;margin:0 auto;padding:var(--frame-size) var(--frame-size) 0;background:#000;transition:transform .48s cubic-bezier(.22,1,.36,1)}
+.work-project-stack{z-index:calc(3 + var(--stack-index));width:min(28vw,430px)}
+.work-project-stack .work-project-inner{transform:translate3d(var(--stack-x),var(--stack-y),0) rotate(var(--stack-angle));transform-origin:50% 84%}
+.work-project-stack.is-stack-open .work-project-inner{transform:translate3d(var(--stack-open-x),var(--stack-open-y),0) rotate(var(--stack-open-angle))}
+.work-project-stack-grid{width:min(24vw,350px)}
+.work-project-stack-grid .work-project-inner{width:100%}
+.work-project-stack-grid:not(.is-stack-open) .work-project-inner{transform:translate3d(var(--stack-x),var(--stack-y),0) rotate(var(--stack-angle)) scale(1.75)}
+.work-project.work-project-stack-grid img{width:100%;height:min(18lvh,170px);max-height:none;object-fit:contain}
+.work-project-stack-grid footer{min-height:clamp(24px,2.4vw,38px);padding:.45rem .15rem .6rem}
+.work-project img{display:block;width:auto;max-width:100%;height:auto;max-height:66lvh;margin:0 auto;object-fit:contain;background:#000}
+.work-project footer{display:flex;justify-content:space-between;gap:1rem;min-height:clamp(32px,3.1vw,52px);padding:.65rem .2rem .9rem;color:#FF2D2D;font:400 7px/1.15 "Fraktion Mono",monospace;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
 .work-mask{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden;scale:var(--mask-scale);transform-origin:50% 50%;will-change:scale}
 .work-mask svg{display:block;width:100%;height:100%}
 .work-mask-inner,.work-mask-outer{fill:var(--red);stroke:var(--ink);stroke-width:1;vector-effect:non-scaling-stroke}
 .work-mask-inner{will-change:auto}
 .work-mask-lines{fill:none;stroke:var(--ink);stroke-width:1;vector-effect:non-scaling-stroke}
-@media(max-width:1000px){.work-letter-scene{font-size:25lvh}.work-project{width:74vw}.work-project footer{font-size:6px}.work-mask svg{width:150%;margin-left:-25%}}
+@media(max-width:1000px){.work-letter-scene{font-size:25lvh}.work-project-portrait{width:48vw}.work-project-square{width:62vw}.work-project-landscape{width:74vw}.work-project-stack{width:42vw}.work-project-stack-grid{width:27vw}.work-project-stack-grid:not(.is-stack-open) .work-project-inner{transform:translate3d(var(--stack-x),var(--stack-y),0) rotate(var(--stack-angle)) scale(1.55)}.work-project.work-project-stack-grid img{height:min(16lvh,135px)}.work-project-stack.is-stack-open .work-project-inner{transform:translate3d(var(--stack-open-x-mobile),var(--stack-open-y-mobile),0) rotate(var(--stack-open-angle))}.work-project footer{font-size:6px}.work-mask svg{width:150%;margin-left:-25%}}
 
 /* Keep expensive animation/compositing work scoped to the visible section. */
 .binary span{animation-play-state:paused}.binary.is-running span{animation-play-state:running}

@@ -6,25 +6,25 @@
   const clamp = (value, min = 0, max = 1) => Math.max(min, Math.min(max, value));
 
   const projectMedia = [
-    ["Editorial Work 01", "images/work/project-01.jpg"],
-    ["Editorial Work 02", "images/work/project-02.jpg"],
-    ["Editorial Work 03", "images/work/project-03.jpg"],
-    ["Editorial Work 04", "images/work/project-04.jpg"],
-    ["Editorial Work 05", "images/work/project-05.jpg"],
-    ["Editorial Work 06", "images/work/project-06.jpg"],
-    ["Editorial Work 07", "images/work/project-07.jpg"],
-    ["Editorial Work 08", "images/work/project-08.jpg"],
-    ["Editorial Work 09", "images/work/project-09.jpg"],
-    ["Editorial Work 10", "images/work/project-10.jpg"],
-    ["Editorial Work 11", "images/work/project-11.jpg"],
-    ["Editorial Work 12", "images/work/project-12.jpg"],
-    ["Editorial Work 13", "images/work/project-13.jpg"],
-    ["Editorial Work 14", "images/work/project-14.jpg"],
-    ["Editorial Work 15", "images/work/project-15.jpg"],
-    ["Editorial Work 16", "images/work/project-16.jpg"],
-    ["Marshall 1962", "images/work/project-17.png"],
-    ["Vinery", "images/work/project-18.png"],
-    ["Aru", "images/work/project-19.png"]
+    ["Marshall 1962", "images/work/project-17.png", "landscape"],
+    ["Vinery", "images/work/project-18.png", "landscape"],
+    ["Aru", "images/work/project-19.png", "landscape"],
+    ["Editorial Work 01", "images/work/project-01.jpg", "portrait"],
+    ["Editorial Work 02", "images/work/project-02.jpg", "square"],
+    ["Editorial Work 03", "images/work/project-03.jpg", "landscape"],
+    ["Editorial Work 04", "images/work/project-04.jpg", "square"],
+    ["Editorial Work 05", "images/work/project-05.jpg", "portrait"],
+    ["Editorial Work 06", "images/work/project-06.jpg", "landscape"],
+    ["Editorial Work 07", "images/work/project-07.jpg", "landscape"],
+    ["Editorial Work 08", "images/work/project-08.jpg", "landscape"],
+    ["Editorial Work 09", "images/work/project-09.jpg", "portrait"],
+    ["Editorial Work 10", "images/work/project-10.jpg", "portrait"],
+    ["Editorial Work 11", "images/work/project-11.jpg", "portrait"],
+    ["Editorial Work 12", "images/work/project-12.jpg", "portrait"],
+    ["Editorial Work 13", "images/work/project-13.jpg", "portrait"],
+    ["Editorial Work 14", "images/work/project-14.jpg", "portrait"],
+    ["Editorial Work 15", "images/work/project-15.jpg", "square"],
+    ["Editorial Work 16", "images/work/project-16.jpg", "square"]
   ];
 
   const archiveImages = [
@@ -73,12 +73,61 @@
     }).join("");
 
     const projectScene = $(".work-project-scene");
-    projectScene.innerHTML = projectMedia.map(([title, src], index) => {
-      const size = .5 + ((index * 37) % 50) / 100;
-      const y = (.5 + ((index * 53) % 50) / 100) * (index % 2 ? -1 : 1);
+    const stackDefinitions = [
+      { id: "pair-4-11", indexes: [10, 3] },
+      { id: "pair-9-10", indexes: [8, 9] },
+      { id: "triple-12-14", indexes: [11, 12, 13] },
+      { id: "grid-remaining", indexes: [4, 5, 6, 7, 14, 15, 16, 17, 18] }
+    ];
+    projectScene.innerHTML = projectMedia.map(([title, src, shape], index) => {
+      const stackDefinition = stackDefinitions.find(({ indexes }) => indexes.includes(index));
+      const stackIndex = stackDefinition ? stackDefinition.indexes.indexOf(index) : -1;
+      const stackCount = stackDefinition?.indexes.length || 0;
+      const size = index < 3 ? .87 : stackCount === 9 ? .72 : stackIndex >= 0 ? .78 : .5 + ((index * 37) % 50) / 100;
+      const y = stackIndex >= 0 ? 0 : (.5 + ((index * 53) % 50) / 100) * (index % 2 ? -1 : 1);
       const hash = (index * 7919 % 1679616).toString(36).padStart(4, "0").slice(0, 4);
-      return `<article class="work-project" style="--card-size:${size};--card-y:${y}"><img src="${src}" alt="${title}" loading="lazy" decoding="async"><footer><span>${title}</span><span>#${hash} - ${String(index + 1).padStart(4, "0")}/${String(projectMedia.length).padStart(2, "0")}</span></footer></article>`;
+      const featured = index < 3 ? " work-project-featured" : "";
+      const stacked = stackIndex >= 0 ? " work-project-stack" : "";
+      const gridStack = stackCount === 9 ? " work-project-stack-grid" : "";
+      const stackRest = stackCount === 9 ? Array.from({ length: 9 }, (_, position) => {
+        const column = position % 3;
+        const row = Math.floor(position / 3);
+        const angles = [-6, -3, 3, 5, -2, 2, -5, 4, 0];
+        return {
+          x: `${(position - 4) * 1.5}%`,
+          y: `${((position % 2) * 2 - 1) * 1.5}%`,
+          angle: `${angles[position]}deg`,
+          openX: `${(column - 1) * 115}%`,
+          openXMobile: `${(column - 1) * 108}%`,
+          openY: `${(row - 1) * 115}%`,
+          openYMobile: `${(row - 1) * 105}%`,
+          openAngle: "0deg"
+        };
+      }) : stackCount === 2 ? [
+        { x: "-7%", y: "2%", angle: "-5deg", openX: "-62%", openXMobile: "-48%", openY: "2%", openYMobile: "2%", openAngle: "-7deg" },
+        { x: "7%", y: "-1%", angle: "4deg", openX: "62%", openXMobile: "48%", openY: "2%", openYMobile: "2%", openAngle: "6deg" }
+      ] : [
+        { x: "-11%", y: "3%", angle: "-6deg", openX: "-88%", openXMobile: "-62%", openY: "2%", openYMobile: "2%", openAngle: "-7deg" },
+        { x: "-1%", y: "-6%", angle: "6deg", openX: "0%", openXMobile: "0%", openY: "2%", openYMobile: "2%", openAngle: "7deg" },
+        { x: "11%", y: "2%", angle: "0deg", openX: "88%", openXMobile: "62%", openY: "2%", openYMobile: "2%", openAngle: "0deg" }
+      ];
+      const stack = stackIndex >= 0 ? stackRest[stackIndex] : null;
+      const stackStyle = stack ? `;--stack-index:${stackIndex};--stack-x:${stack.x};--stack-y:${stack.y};--stack-angle:${stack.angle};--stack-open-x:${stack.openX};--stack-open-x-mobile:${stack.openXMobile};--stack-open-y:${stack.openY};--stack-open-y-mobile:${stack.openYMobile};--stack-open-angle:${stack.openAngle}` : "";
+      const loading = stack ? "eager" : "lazy";
+      const priority = stack ? ' fetchpriority="high"' : "";
+      const stackData = stackDefinition ? ` data-stack-group="${stackDefinition.id}"` : "";
+      return `<article class="work-project work-project-${shape}${featured}${stacked}${gridStack}"${stackData} style="--card-size:${size};--card-y:${y}${stackStyle}"><div class="work-project-inner"><img src="${src}" alt="${title}" loading="${loading}"${priority} decoding="async"><footer><span>${title}</span><span>#${hash} - ${String(index + 1).padStart(4, "0")}/${String(projectMedia.length).padStart(2, "0")}</span></footer></div></article>`;
     }).join("");
+    const stackedCards = $$(".work-project-stack", projectScene);
+    stackedCards.forEach((card) => {
+      const group = card.dataset.stackGroup;
+      const groupCards = stackedCards.filter((candidate) => candidate.dataset.stackGroup === group);
+      const toggleStack = (open) => groupCards.forEach((candidate) => candidate.classList.toggle("is-stack-open", open));
+      card.addEventListener("mouseenter", () => toggleStack(true));
+      card.addEventListener("mouseleave", (event) => {
+        if (event.relatedTarget?.closest?.(".work-project-stack")?.dataset.stackGroup !== group) toggleStack(false);
+      });
+    });
     const workHoldVh = 35;
     $(".work-showcase").style.height = `calc(${projectMedia.length * 50}lvh + ${workHoldVh}lvh)`;
     $(".work-showcase").style.setProperty("--work-hold-vh", String(workHoldVh));
@@ -578,6 +627,36 @@
 
   function initWorkSection() {
     const section = $(".work-showcase"), stage = $(".work-stage"), cards = $$(".work-project"), letterCopies = [10, 14, 14, 13];
+    const stackGroupMap = new Map();
+    const stackTimelineOrder = new Map([
+      ["pair-4-11", 0],
+      ["pair-9-10", 1],
+      ["triple-12-14", 2],
+      ["grid-remaining", 3]
+    ]);
+    const cardGroups = cards.reduce((groups, card, index) => {
+      const stackGroup = card.dataset.stackGroup;
+      if (stackGroup) {
+        if (!stackGroupMap.has(stackGroup)) {
+          const group = [];
+          stackGroupMap.set(stackGroup, group);
+          groups.push(group);
+        }
+        stackGroupMap.get(stackGroup).push(index);
+      } else {
+        groups.push([index]);
+      }
+      return groups;
+    }, []).sort((groupA, groupB) => {
+      const rank = (group) => {
+        const firstCard = cards[group[0]];
+        const stackGroup = firstCard.dataset.stackGroup;
+        if (group[0] < 3) return group[0];
+        if (stackGroup) return 3 + stackTimelineOrder.get(stackGroup);
+        return 100 + group[0];
+      };
+      return rank(groupA) - rank(groupB);
+    });
     const maskInner = $(".work-mask-inner"), maskOuter = $(".work-mask-outer"), maskGridClip = $(".work-mask-grid-clip"), rowFrequencies = [1, 1.18, .93, 1.12];
     const glyphs = $$("[data-letter]", stage).map((element) => ({ element, row: Number(element.dataset.row || 0), slot: Number(element.dataset.slot || 0) }));
     const visibleCards = new Set(); let raf = 0;
@@ -608,8 +687,25 @@
       maskOuter.setAttribute("d", outerPath); maskInner.setAttribute("d", innerPath); maskGridClip.setAttribute("d", outerPath);
       const maxScale = stageWidth / Math.max(1, outerWidth / 2), maskScale = 1 + (maxScale - 1) * open;
       stage.style.setProperty("--mask-scale", String(maskScale));
-      const galleryStart = .085, galleryEnd = .925, centresSpan = galleryEnd - galleryStart, nearest = Math.round(clamp((progress - galleryStart) / centresSpan) * (projectMedia.length - 1)), nextActive = progress < galleryStart || progress > galleryEnd ? -1 : nearest, nextVisible = new Set();
-      if (nextActive >= 0) for (let index = Math.max(0, nearest - 1); index <= Math.min(projectMedia.length - 1, nearest + 1); index++) { const centre = galleryStart + (index + .5) / projectMedia.length * centresSpan, halfTravel = centresSpan / projectMedia.length * 1.08, cardProgress = clamp((centre - progress) / halfTravel, -1, 1), visible = Math.abs(cardProgress) < .999, card = cards[index]; card.style.setProperty("--card-progress", String(cardProgress)); card.style.opacity = visible ? "1" : "0"; card.style.visibility = visible ? "visible" : "hidden"; card.style.pointerEvents = Math.abs(cardProgress) < .35 ? "auto" : "none"; if (visible) nextVisible.add(index); }
+      const galleryStart = .085, galleryEnd = .925, centresSpan = galleryEnd - galleryStart, nearest = Math.round(clamp((progress - galleryStart) / centresSpan) * (cardGroups.length - 1)), nextActive = progress < galleryStart || progress > galleryEnd ? -1 : nearest, nextVisible = new Set();
+      if (nextActive >= 0) {
+        const firstGroup = Math.max(0, nearest - 1);
+        const lastGroup = Math.min(cardGroups.length - 1, nearest + 1);
+        for (let groupIndex = firstGroup; groupIndex <= lastGroup; groupIndex++) {
+          const centre = galleryStart + (groupIndex + .5) / cardGroups.length * centresSpan;
+          const halfTravel = centresSpan / cardGroups.length * 1.08;
+          const cardProgress = clamp((centre - progress) / halfTravel, -1, 1);
+          const visible = Math.abs(cardProgress) < .92;
+          cardGroups[groupIndex].forEach((index) => {
+            const card = cards[index];
+            card.style.setProperty("--card-progress", String(cardProgress));
+            card.style.opacity = visible ? "1" : "0";
+            card.style.visibility = visible ? "visible" : "hidden";
+            card.style.pointerEvents = Math.abs(cardProgress) < .35 ? "auto" : "none";
+            if (visible) nextVisible.add(index);
+          });
+        }
+      }
       visibleCards.forEach((index) => { if (!nextVisible.has(index)) { cards[index].style.opacity = "0"; cards[index].style.visibility = "hidden"; cards[index].style.pointerEvents = "none"; } }); visibleCards.clear(); nextVisible.forEach((index) => visibleCards.add(index));
     };
     const requestUpdate = () => { if (!raf) raf = requestAnimationFrame(update); };
