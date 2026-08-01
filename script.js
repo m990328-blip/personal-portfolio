@@ -7,8 +7,8 @@
 
   const projectMedia = [
     ["Marshall 1962", "images/work/project-17.png", "landscape"],
-    ["Vinery", "images/work/project-18.png", "landscape"],
-    ["Aru", "images/work/project-19.png", "landscape"],
+    ["Vinery", "images/work/project-19.png", "landscape"],
+    ["Aru", "images/work/project-18.png", "landscape"],
     ["Editorial Work 01", "images/work/project-01.jpg", "portrait"],
     ["Editorial Work 02", "images/work/project-02.jpg", "square"],
     ["Editorial Work 03", "images/work/project-03.jpg", "landscape"],
@@ -83,7 +83,7 @@
       const stackDefinition = stackDefinitions.find(({ indexes }) => indexes.includes(index));
       const stackIndex = stackDefinition ? stackDefinition.indexes.indexOf(index) : -1;
       const stackCount = stackDefinition?.indexes.length || 0;
-      const size = index < 3 ? .87 : stackCount === 9 ? .72 : stackIndex >= 0 ? .78 : .5 + ((index * 37) % 50) / 100;
+      const size = index < 3 ? .87 : stackCount === 9 ? .78 : stackIndex >= 0 ? .78 : .5 + ((index * 37) % 50) / 100;
       const y = stackIndex >= 0 ? 0 : (.5 + ((index * 53) % 50) / 100) * (index % 2 ? -1 : 1);
       const hash = (index * 7919 % 1679616).toString(36).padStart(4, "0").slice(0, 4);
       const featured = index < 3 ? " work-project-featured" : "";
@@ -93,14 +93,16 @@
         const column = position % 3;
         const row = Math.floor(position / 3);
         const angles = [-6, -3, 3, 5, -2, 2, -5, 4, 0];
+        const zOrder = [2, 3, 4, 9, 5, 6, 7, 8, 1];
         return {
           x: `${(position - 4) * 1.5}%`,
           y: `${((position % 2) * 2 - 1) * 1.5}%`,
           angle: `${angles[position]}deg`,
-          openX: `${(column - 1) * 115}%`,
-          openXMobile: `${(column - 1) * 108}%`,
-          openY: `${(row - 1) * 115}%`,
-          openYMobile: `${(row - 1) * 105}%`,
+          z: zOrder[position],
+          openX: `${(column - 1) * 26}vw`,
+          openXMobile: `${(column - 1) * 34}vw`,
+          openY: `${(row - 1) * 38}lvh`,
+          openYMobile: `${(row - 1) * 36}lvh`,
           openAngle: "0deg"
         };
       }) : stackCount === 2 ? [
@@ -112,11 +114,36 @@
         { x: "11%", y: "2%", angle: "0deg", openX: "88%", openXMobile: "62%", openY: "2%", openYMobile: "2%", openAngle: "0deg" }
       ];
       const stack = stackIndex >= 0 ? stackRest[stackIndex] : null;
-      const stackStyle = stack ? `;--stack-index:${stackIndex};--stack-x:${stack.x};--stack-y:${stack.y};--stack-angle:${stack.angle};--stack-open-x:${stack.openX};--stack-open-x-mobile:${stack.openXMobile};--stack-open-y:${stack.openY};--stack-open-y-mobile:${stack.openYMobile};--stack-open-angle:${stack.openAngle}` : "";
+      const stackStyle = stack ? `;--stack-index:${stackIndex};--stack-z:${stack.z ?? stackIndex};--stack-x:${stack.x};--stack-y:${stack.y};--stack-angle:${stack.angle};--stack-open-x:${stack.openX};--stack-open-x-mobile:${stack.openXMobile};--stack-open-y:${stack.openY};--stack-open-y-mobile:${stack.openYMobile};--stack-open-angle:${stack.openAngle}` : "";
       const loading = stack ? "eager" : "lazy";
       const priority = stack ? ' fetchpriority="high"' : "";
       const stackData = stackDefinition ? ` data-stack-group="${stackDefinition.id}"` : "";
-      return `<article class="work-project work-project-${shape}${featured}${stacked}${gridStack}"${stackData} style="--card-size:${size};--card-y:${y}${stackStyle}"><div class="work-project-inner"><img src="${src}" alt="${title}" loading="${loading}"${priority} decoding="async"><footer><span>${title}</span><span>#${hash} - ${String(index + 1).padStart(4, "0")}/${String(projectMedia.length).padStart(2, "0")}</span></footer></div></article>`;
+      const image = `<img src="${src}" alt="${title}" loading="${loading}"${priority} decoding="async">`;
+      const hoverDetails = index === 0 ? {
+        name: "Mashall",
+        type: "팀 프로젝트",
+        description: "기존의 제품 중심 구조를 브랜드 중심으로 전환하고, 브랜드의 탄생부터 현재까지의<br>이야기를 하나의 스크롤 서사로 구성했습니다. 이를 통해 사용자가 제품을 탐색하는 것을<br>넘어 마샬의 철학과 헤리티지를 직접 경험하도록 기획했습니다.",
+        web: "https://marshall-rebrand.vercel.app/",
+        linkLabel: "웹 바로가기",
+        plan: "https://www.figma.com/proto/dP1TrvrWnnpwVg8Mz5LjqS/%EC%9D%B4%EB%AF%BC%EC%98%81?node-id=1305-1253&viewport=577%2C758%2C0.03&t=qrJfcm8gQVISKFM5-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1305%3A1253&page-id=1305%3A642"
+      } : index === 1 ? {
+        name: "Viner",
+        type: "팀 프로젝트",
+        description: "와인을 어렵게 느끼는 사용자가 자신의 취향에 맞는 와인을 보다 쉽게 발견하고,<br>다양한 와인 정보를 직관적으로 탐색할 수 있도록 구성했습니다. 취향을 기록하고<br>추천받는 흐름을 통해 와인을 편안하게 경험하도록 기획했습니다.",
+        web: "https://wine-app-eight-wine.vercel.app/",
+        linkLabel: "앱 바로가기",
+        plan: "https://www.figma.com/proto/dP1TrvrWnnpwVg8Mz5LjqS/%EC%9D%B4%EB%AF%BC%EC%98%81?node-id=1305-2063&viewport=668%2C1790%2C0.04&t=P7pbNsF3l3vinHmz-1&scaling=scale-down-width&content-scaling=fixed&page-id=1305%3A2025"
+      } : index === 2 ? {
+        name: "Aru",
+        type: "개인 프로젝트",
+        description: "사용자가 필요한 정보를 자연스럽게 탐색하고 서비스의 핵심 기능에 빠르게 도달할 수 있도록<br>직관적인 화면 구조와 일관된 사용자 흐름을 구성했습니다. 복잡한 과정을 단순하게 정리해<br>처음 사용하는 순간부터 편안하게 경험할 수 있도록 기획했습니다.",
+        web: "https://aru-react.vercel.app/onboarding",
+        linkLabel: "앱 바로가기",
+        plan: "https://www.figma.com/proto/dP1TrvrWnnpwVg8Mz5LjqS/%EC%9D%B4%EB%AF%BC%EC%98%81?node-id=967-5866&viewport=34%2C154%2C0.04&t=19PNm5J5SINDkVwP-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=967%3A2243&page-id=967%3A2242"
+      } : null;
+      const planLink = hoverDetails?.plan ? `<a href="${hoverDetails.plan}" target="_blank" rel="noopener noreferrer">기획서 바로가기</a>` : "";
+      const featuredHover = hoverDetails ? `<div class="work-project-media">${image}<div class="work-project-hover"><div class="work-project-hover-copy"><h3>${hoverDetails.name}</h3><p class="work-project-type">[ ${hoverDetails.type} ]</p><p class="work-project-description">${hoverDetails.description}</p><div class="work-project-links"><a href="${hoverDetails.web}" target="_blank" rel="noopener noreferrer">${hoverDetails.linkLabel}</a>${planLink}</div></div></div></div>` : image;
+      return `<article class="work-project work-project-${shape}${featured}${stacked}${gridStack}"${stackData} style="--card-size:${size};--card-y:${y}${stackStyle}"><div class="work-project-inner">${featuredHover}<footer><span>${title}</span><span>#${hash} - ${String(index + 1).padStart(4, "0")}/${String(projectMedia.length).padStart(2, "0")}</span></footer></div></article>`;
     }).join("");
     const stackedCards = $$(".work-project-stack", projectScene);
     stackedCards.forEach((card) => {
@@ -544,12 +571,8 @@
   }
 
   function initSmileyTrail() {
-    const grid = $(".award-grid"), root = $(".smiley-trail"), awards = [...$$(".award", grid), ...$$(".value-reveal")], faces = Array.from(root.children);
-    while (faces.length < 10) {
-      const face = faces[faces.length % Math.max(1, faces.length)].cloneNode(true);
-      root.appendChild(face);
-      faces.push(face);
-    }
+    const grid = $(".award-grid"), root = $(".smiley-trail"), awards = [...$$(".award", grid), ...$$(".value-reveal")];
+    root.remove();
     awards.forEach((award) => {
       const inner = document.createElement("div");
       inner.className = "award-reveal-inner";
@@ -574,55 +597,6 @@
     addEventListener("resize", requestReveal);
     requestReveal();
 
-    let burstFrame = 0;
-    const burst = (event) => {
-      root.style.opacity = "1";
-      const award = event.currentTarget, cell = award.getBoundingClientRect();
-      award.classList.add("is-active");
-      clearTimeout(award._activeTimer);
-      award._activeTimer = setTimeout(() => award.classList.remove("is-active"), 100);
-      cancelAnimationFrame(burstFrame);
-      const particles = [];
-      const count = innerWidth > 767 ? 10 : 5;
-      faces.forEach((face, index) => {
-        face.getAnimations().forEach((animation) => animation.cancel());
-        if (index >= count) {
-          face.style.opacity = "0";
-          return;
-        }
-        const scale = .25 + Math.random() * .75;
-        particles.push({
-          face,
-          x: cell.left + cell.width * .5 - 24 * scale,
-          y: cell.top + cell.height * .5 - 24 * scale,
-          vx: (Math.random() * 2 - 1) * 5,
-          vy: Math.random() * -10 - 5,
-          rotation: 0,
-          spin: (Math.random() * 2 - 1) * 10,
-          scale,
-          scaleGrowth: Math.random() * .01
-        });
-      });
-      let previous = performance.now();
-      const fall = (now) => {
-        const frame = Math.min(2, (now - previous) / (1000 / 60)); previous = now;
-        let visible = false;
-        particles.forEach((particle) => {
-          particle.vy += .45 * frame;
-          particle.x += particle.vx * frame;
-          particle.y += particle.vy * frame;
-          particle.rotation += particle.spin * frame;
-          particle.scale += particle.scaleGrowth * frame;
-          if (particle.y < innerHeight + particle.face.offsetHeight + 80) visible = true;
-          particle.face.style.opacity = "1";
-          particle.face.style.transform = `translate3d(${particle.x}px,${particle.y}px,0) scale(${particle.scale}) rotate(${particle.rotation}deg)`;
-        });
-        if (visible) burstFrame = requestAnimationFrame(fall);
-        else particles.forEach(({ face }) => { face.style.opacity = "0"; face.style.transform = "translate3d(-100px,-100px,0)"; });
-      };
-      burstFrame = requestAnimationFrame(fall);
-    };
-    awards.forEach((award) => award.addEventListener("mouseenter", burst));
   }
 
   function initWorkSection() {
@@ -756,28 +730,30 @@
       const box = section.getBoundingClientRect(), face = smiley.getBoundingClientRect();
       const width = box.width, height = box.height;
       const cx = face.left - box.left + face.width / 2, cy = face.top - box.top + face.height / 2;
-      const columns = innerWidth > 767 ? 12 : 8, depthSteps = innerWidth > 767 ? 8 : 6;
-      const gap = width / columns;
+      const columns = innerWidth > 767 ? 36 : 24, depthSteps = innerWidth > 767 ? 11 : 8;
+      const planeLeft = -width * 2, planeRight = width * 3, planeWidth = planeRight - planeLeft;
+      const gap = planeWidth / columns;
       let d = "";
 
-      // Ceiling and floor rays share one vanishing point. No side-wall lines.
+      // Keep the ray count, but spread it across a five-viewport plane. This
+      // opens the cells and makes the perspective rays lie flatter on screen.
       for (let index = 0; index <= columns; index++) {
-        const x = gap * index;
+        const x = planeLeft + gap * index;
         d += `M ${x} 0 L ${cx} ${cy} M ${cx} ${cy} L ${x} ${height} `;
       }
 
-      // Cross-lines narrow toward the vanishing point to preserve the room depth.
+      // Each successive cross-line contracts toward the shared vanishing point.
       for (let index = 0; index < depthSteps; index++) {
         const depth = index / depthSteps;
-        const eased = 1 - (1 - depth) ** 2;
-        const ceilingLeftX = cx * eased;
-        const ceilingRightX = width + (cx - width) * eased;
+        const eased = 1 - (1 - depth) ** 2.35;
+        const ceilingLeftX = planeLeft + (cx - planeLeft) * eased;
+        const ceilingRightX = planeRight + (cx - planeRight) * eased;
         const ceilingY = cy * eased;
         d += `M ${ceilingLeftX} ${ceilingY} L ${ceilingRightX} ${ceilingY} `;
 
-        const floorLeftX = cx * (1 - eased);
-        const floorRightX = cx + (width - cx) * eased;
-        const floorY = cy + (height - cy) * eased;
+        const floorLeftX = planeLeft + (cx - planeLeft) * eased;
+        const floorRightX = planeRight + (cx - planeRight) * eased;
+        const floorY = height + (cy - height) * eased;
         d += `M ${floorLeftX} ${floorY} L ${floorRightX} ${floorY} `;
       }
 

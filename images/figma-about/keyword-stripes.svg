@@ -1,34 +1,34 @@
-<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 249 333" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="249" height="333" viewBox="0 0 249 333" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="Mask group">
-<mask id="mask0_0_31" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="249" height="333">
+<mask id="mask0_0_27" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="249" height="333">
 <rect id="Rectangle 6" x="3.81553e-05" width="249" height="333" fill="#D9D9D9"/>
 </mask>
-<g mask="url(#mask0_0_31)">
-<line id="Line 25" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -284.085)" stroke="#FF2D2D"/>
-<line id="Line 26" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -256.805)" stroke="#FF2D2D"/>
-<line id="Line 27" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -229.525)" stroke="#FF2D2D"/>
-<line id="Line 28" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -202.246)" stroke="#FF2D2D"/>
-<line id="Line 29" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -174.966)" stroke="#FF2D2D"/>
-<line id="Line 30" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -147.686)" stroke="#FF2D2D"/>
-<line id="Line 31" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -120.407)" stroke="#FF2D2D"/>
-<line id="Line 32" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -93.1269)" stroke="#FF2D2D"/>
-<line id="Line 33" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -65.8476)" stroke="#FF2D2D"/>
-<line id="Line 34" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -38.5678)" stroke="#FF2D2D"/>
-<line id="Line 35" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -11.2881)" stroke="#FF2D2D"/>
-<line id="Line 36" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 15.9917)" stroke="#FF2D2D"/>
-<line id="Line 37" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 43.271)" stroke="#FF2D2D"/>
-<line id="Line 38" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 70.5508)" stroke="#FF2D2D"/>
-<line id="Line 39" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 97.8306)" stroke="#FF2D2D"/>
-<line id="Line 40" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 125.11)" stroke="#FF2D2D"/>
-<line id="Line 41" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 152.39)" stroke="#FF2D2D"/>
-<line id="Line 42" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 179.669)" stroke="#FF2D2D"/>
-<line id="Line 43" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 206.949)" stroke="#FF2D2D"/>
-<line id="Line 44" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 234.229)" stroke="#FF2D2D"/>
-<line id="Line 45" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 261.508)" stroke="#FF2D2D"/>
-<line id="Line 46" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 288.788)" stroke="#FF2D2D"/>
-<line id="Line 47" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 316.068)" stroke="#FF2D2D"/>
-<line id="Line 48" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 343.348)" stroke="#FF2D2D"/>
-<line id="Line 49" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 370.627)" stroke="#FF2D2D"/>
+<g mask="url(#mask0_0_27)">
+<line id="Line 25" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -284.085)" stroke="#383FE9"/>
+<line id="Line 26" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -256.805)" stroke="#383FE9"/>
+<line id="Line 27" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -229.525)" stroke="#383FE9"/>
+<line id="Line 28" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -202.246)" stroke="#383FE9"/>
+<line id="Line 29" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -174.966)" stroke="#383FE9"/>
+<line id="Line 30" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -147.686)" stroke="#383FE9"/>
+<line id="Line 31" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -120.407)" stroke="#383FE9"/>
+<line id="Line 32" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -93.1269)" stroke="#383FE9"/>
+<line id="Line 33" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -65.8476)" stroke="#383FE9"/>
+<line id="Line 34" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -38.5678)" stroke="#383FE9"/>
+<line id="Line 35" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 -11.2881)" stroke="#383FE9"/>
+<line id="Line 36" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 15.9917)" stroke="#383FE9"/>
+<line id="Line 37" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 43.271)" stroke="#383FE9"/>
+<line id="Line 38" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 70.5508)" stroke="#383FE9"/>
+<line id="Line 39" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 97.8306)" stroke="#383FE9"/>
+<line id="Line 40" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 125.11)" stroke="#383FE9"/>
+<line id="Line 41" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 152.39)" stroke="#383FE9"/>
+<line id="Line 42" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 179.669)" stroke="#383FE9"/>
+<line id="Line 43" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 206.949)" stroke="#383FE9"/>
+<line id="Line 44" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 234.229)" stroke="#383FE9"/>
+<line id="Line 45" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 261.508)" stroke="#383FE9"/>
+<line id="Line 46" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 288.788)" stroke="#383FE9"/>
+<line id="Line 47" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 316.068)" stroke="#383FE9"/>
+<line id="Line 48" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 343.348)" stroke="#383FE9"/>
+<line id="Line 49" y1="-0.5" x2="368.944" y2="-0.5" transform="matrix(-0.670458 0.741947 -0.670458 -0.741947 247.362 370.627)" stroke="#383FE9"/>
 </g>
 </g>
 </svg>

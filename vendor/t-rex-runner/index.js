@@ -1129,7 +1129,7 @@
     function checkForCollision(obstacle, tRex, opt_canvasCtx) {
         var obstacleBoxXPos = Runner.defaultDimensions.WIDTH + obstacle.xPos;
 
-        // Adjustments are made to the bounding box as there is a 1 pixel white
+        // Adjustments are made to the bounding box as there is a 1 pixel #FFFAE4
         // border around the t-rex and obstacles.
         var tRexBox = new CollisionBox(
             tRex.xPos + 1,
@@ -1199,7 +1199,7 @@
      */
     function drawCollisionBoxes(canvasCtx, tRexBox, obstacleBox) {
         canvasCtx.save();
-        canvasCtx.strokeStyle = '#f00';
+        canvasCtx.strokeStyle = '#383FE9';
         canvasCtx.strokeRect(tRexBox.x, tRexBox.y, tRexBox.width, tRexBox.height);
 
         canvasCtx.strokeStyle = '#0f0';
@@ -1759,7 +1759,7 @@
             this.canvasCtx.font = 'bold 9px monospace';
             this.canvasCtx.textAlign = 'center';
             this.canvasCtx.textBaseline = 'bottom';
-            this.canvasCtx.fillStyle = '#000000';
+            this.canvasCtx.fillStyle = '#FFFAE4';
             this.canvasCtx.fillText('MINYOUNG', centerX, labelY);
             this.canvasCtx.restore();
         },
