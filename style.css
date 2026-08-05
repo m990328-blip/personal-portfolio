@@ -98,7 +98,7 @@
 @property --letter-progress{syntax:"<number>";inherits:false;initial-value:-.15}
 @keyframes work-letter-cycle{from{--letter-progress:-.15}to{--letter-progress:1.278571}}
 .work-letter-row span{--head:calc((var(--letter-progress) - .5) * -2);--ahead:calc(var(--head) * var(--head));position:absolute;top:var(--letter-top);left:50%;z-index:1;line-height:.85;color:var(--red);opacity:calc(1 - var(--work-state) * .5);transform:translate(-50%,-50%) rotateY(calc(var(--head) * -10deg * var(--work-state))) translate3d(calc(var(--head) * 50vw * var(--work-state)),calc(var(--letter-y) * 50% * var(--ahead) * var(--work-state)),0);transform-origin:center;will-change:transform,opacity}
-.work-letter-row span.is-foreground{z-index:3}
+.work-letter-row span.is-foreground{z-index:1}
 .work-letter-row span:before{content:none}
 .work-project{--card-progress:1;position:absolute;top:50%;left:50%;z-index:2;max-width:calc(100vw - 3rem);max-height:76lvh;margin:0;background:transparent;color:#383FE9;transform:rotateY(calc(var(--card-progress) * -20deg)) translate3d(calc(var(--card-progress) * (50vw + 100%) - 50%),calc(-50% + var(--card-y) * 8lvh),calc(var(--card-progress) * var(--card-progress) * -5rem)) scale(var(--card-size));transform-origin:center;will-change:transform,opacity;pointer-events:none}
 .work-project-portrait{width:28vw}
@@ -111,7 +111,8 @@
 .work-project-stack.is-stack-open .work-project-inner{transform:translate3d(var(--stack-open-x),var(--stack-open-y),0) rotate(var(--stack-open-angle))}
 .work-project-stack[data-stack-group="triple-craft"]:not(.is-stack-open) .work-project-inner,.work-project-stack[data-stack-group="triple-12-14"]:not(.is-stack-open) .work-project-inner{transition-duration:1.15s}
 .work-project-stack-grid{z-index:calc(3 + var(--stack-z));width:23vw}
-.work-project.work-project-stack-grid{transform:translate3d(calc(var(--card-progress) * (50vw + 100%) - 50%),calc(-50% + var(--card-y) * 8lvh),0) scale(var(--card-size))}
+.work-project.work-project-stack-grid.is-stack-open{transform:rotateY(clamp(-20deg,calc(var(--card-progress) * -20deg + (var(--stack-open-x) + var(--stack-scroll-x,0vw)) / 1vw * -0.4deg),20deg)) translate3d(calc(var(--card-progress) * (50vw + 100%) - 50%),calc(-50% + var(--card-y) * 8lvh),0) scale(var(--card-size))}
+.work-project[data-stack-group="triple-craft"].is-stack-open,.work-project[data-stack-group="triple-12-14"].is-stack-open{transform:rotateY(calc(var(--card-progress) * -20deg + var(--stack-open-x) / 1vw * -0.12deg)) translate3d(calc(var(--card-progress) * (50vw + 100%) - 50%),calc(-50% + var(--card-y) * 8lvh),calc(var(--card-progress) * var(--card-progress) * -5rem)) scale(var(--card-size))}
 .work-project-stack-grid.work-project-portrait{width:19vw}
 .work-project-stack-grid.work-project-landscape{width:29vw}
 .work-project-stack-grid .work-project-inner{width:100%}
@@ -139,7 +140,7 @@
 .work-mask-inner,.work-mask-outer{fill:var(--red);stroke:var(--ink);stroke-width:1;vector-effect:non-scaling-stroke}
 .work-mask-inner{will-change:auto}
 .work-mask-lines{fill:none;stroke:var(--ink);stroke-width:1;vector-effect:non-scaling-stroke}
-@media(max-width:1000px){.work-letter-scene{font-size:25lvh}.work-project-portrait{width:48vw}.work-project-square{width:62vw}.work-project-landscape{width:74vw}.work-project-stack{width:42vw}.work-project-stack-grid{width:32vw}.work-project-stack-grid.work-project-portrait{width:27vw}.work-project-stack-grid.work-project-landscape{width:37vw}.work-project-stack-grid:not(.is-stack-open) .work-project-inner{transform:translate3d(var(--stack-x),var(--stack-y),0) rotate(var(--stack-angle))}.work-project.work-project-stack-grid img{height:auto}.work-project-stack.is-stack-open .work-project-inner{transform:translate3d(var(--stack-open-x-mobile),var(--stack-open-y-mobile),0) rotate(var(--stack-open-angle))}.work-project-stack-grid.is-stack-open .work-project-inner{transform:translate3d(calc(var(--stack-open-x-mobile) + var(--stack-scroll-x,0vw)),var(--stack-open-y-mobile),0) rotate(var(--stack-open-angle))}.work-project footer{font-size:6px}.work-mask svg{width:150%;margin-left:-25%}}
+@media(max-width:1000px){.work-letter-scene{font-size:25lvh}.work-project-portrait{width:48vw}.work-project-square{width:62vw}.work-project-landscape{width:74vw}.work-project-stack{width:42vw}.work-project-stack-grid{width:32vw}.work-project-stack-grid.work-project-portrait{width:27vw}.work-project-stack-grid.work-project-landscape{width:37vw}.work-project-stack-grid:not(.is-stack-open) .work-project-inner{transform:translate3d(var(--stack-x),var(--stack-y),0) rotate(var(--stack-angle))}.work-project.work-project-stack-grid img{height:auto}.work-project-stack.is-stack-open .work-project-inner{transform:translate3d(var(--stack-open-x-mobile),var(--stack-open-y-mobile),0) rotate(var(--stack-open-angle))}.work-project-stack-grid.is-stack-open .work-project-inner{transform:translate3d(calc(var(--stack-open-x-mobile) + var(--stack-scroll-x,0vw)),var(--stack-open-y-mobile),0) rotate(var(--stack-open-angle))}.work-project.work-project-stack-grid.is-stack-open{transform:rotateY(clamp(-20deg,calc(var(--card-progress) * -20deg + (var(--stack-open-x-mobile) + var(--stack-scroll-x,0vw)) / 1vw * -0.4deg),20deg)) translate3d(calc(var(--card-progress) * (50vw + 100%) - 50%),calc(-50% + var(--card-y) * 8lvh),0) scale(var(--card-size))}.work-project[data-stack-group="triple-craft"].is-stack-open,.work-project[data-stack-group="triple-12-14"].is-stack-open{transform:rotateY(calc(var(--card-progress) * -20deg + var(--stack-open-x-mobile) / 1vw * -0.12deg)) translate3d(calc(var(--card-progress) * (50vw + 100%) - 50%),calc(-50% + var(--card-y) * 8lvh),calc(var(--card-progress) * var(--card-progress) * -5rem)) scale(var(--card-size))}.work-project footer{font-size:6px}.work-mask svg{width:150%;margin-left:-25%}}
 @media(max-width:1000px){.work-project-hover h3{font-size:clamp(32px,5vw,76px)}.work-project-hover p{font-size:clamp(8px,.72vw,11px)}.work-project-links a{border-width:1px;font-size:clamp(8px,.65vw,10px)}}
 
 /* Keep expensive animation/compositing work scoped to the visible section. */
@@ -236,9 +237,6 @@
 .warning-spin-card{position:absolute;top:50%;left:50%;width:72%;max-height:72%;aspect-ratio:545/771;transform:translate(-50%,-50%)}
 .warning-spin-card img{position:absolute;inset:0;display:none;width:100%;height:100%;object-fit:contain}
 .warning-spin-card img.is-visible{display:block}
-.typing-character{display:inline-block;opacity:0;white-space:pre}
-.typing-character.is-typed{opacity:1}
-@media(prefers-reduced-motion:reduce){.typing-character{opacity:1}.warning-copy mark{background:var(--ink);color:#FFFAE4}}
 .personal-about{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr;height:calc(641 * var(--story-unit));border-top:var(--story-line) solid var(--ink);gap:var(--story-line);background:var(--ink)}
 .personal-about>div{overflow:hidden;background:var(--red)}
 .about-title{grid-area:1/1/3/2;display:flex;align-items:center;padding:4%;color:var(--ink);font:700 calc(250 * var(--story-unit))/.9587 "Bigger Display",sans-serif;letter-spacing:0}

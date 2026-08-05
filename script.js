@@ -375,34 +375,11 @@
     $$(".binary").forEach((node) => observer.observe(node));
   }
 
-  function initWarningTyping(scrollController) {
+  function initWarningSequence(scrollController) {
     const copy = $(".warning-copy");
     if (!copy) return;
-    const typingEnabled = false;
-    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const accessibleText = copy.innerText.replace(/\n+/g, " ").trim();
-    let characterIndex = 0;
-    const wrapText = (node) => {
-      Array.from(node.childNodes).forEach((child) => {
-        if (child.nodeType === Node.TEXT_NODE) {
-          const fragment = document.createDocumentFragment();
-          Array.from(child.textContent).forEach((character) => {
-            const span = document.createElement("span");
-            span.className = "typing-character";
-            span.style.setProperty("--type-index", characterIndex++);
-            span.textContent = character === " " ? "\u00a0" : character;
-            fragment.appendChild(span);
-          });
-          child.replaceWith(fragment);
-        } else if (child.nodeType === Node.ELEMENT_NODE && child.tagName !== "BR") {
-          if (child.tagName === "MARK") child.style.setProperty("--mark-index", characterIndex);
-          wrapText(child);
-        }
-      });
-    };
-    if (typingEnabled) wrapText(copy);
     copy.setAttribute("aria-label", accessibleText);
-    const characters = $$(".typing-character", copy);
     const flashImages = $$(".warning-flash-images img", copy);
     copy.classList.remove("is-flashing");
     flashImages.forEach((image, index) => image.classList.toggle("is-visible", index === 0));
@@ -412,21 +389,32 @@
     let checkRaf = 0;
     let warningTyped = false;
     let awaitingFirstFlash = false;
-    let lastWheelInputAt = performance.now();
     let flashActive = false;
     let flashCompleted = false;
     let flashLocking = false;
     let flashLockPosition = 0;
     let flashStep = 0;
-    let wheelGestureOpen = false;
     let wheelGestureDirection = 0;
-    let wheelGestureTimer = 0;
+    let wheelGestureDelta = 0;
+    let wheelGestureHandled = false;
+    let wheelReleaseTimer = 0;
     let touchStartY = 0;
 
     const blockedKeys = new Set(["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "]);
+    const wheelThreshold = 70;
+    const resetWheelGesture = () => {
+      clearTimeout(wheelReleaseTimer);
+      wheelGestureDirection = 0;
+      wheelGestureDelta = 0;
+      wheelGestureHandled = false;
+    };
+    const scheduleWheelRelease = () => {
+      clearTimeout(wheelReleaseTimer);
+      wheelReleaseTimer = setTimeout(resetWheelGesture, 80);
+    };
     const waitForFirstFlash = () => {
       awaitingFirstFlash = true;
-      lastWheelInputAt = performance.now();
+      resetWheelGesture();
     };
     const paintFlash = () => {
       flashImages.forEach((image, index) => image.classList.toggle("is-visible", index === flashStep));
@@ -452,30 +440,27 @@
     };
     const preventWheel = (event) => {
       event.preventDefault();
-      const now = performance.now();
-      const wheelGap = now - lastWheelInputAt;
-      lastWheelInputAt = now;
-      if (awaitingFirstFlash) {
-        if (wheelGap >= 120 && event.deltaY > 0) {
-          awaitingFirstFlash = false;
-          wheelGestureOpen = true;
-          wheelGestureDirection = 1;
-          clearTimeout(wheelGestureTimer);
-          wheelGestureTimer = setTimeout(() => { wheelGestureOpen = false; }, 180);
-          startFlash();
-        }
-        return;
-      }
-      if (!flashActive || event.deltaY === 0) return;
-      const direction = Math.sign(event.deltaY);
-      clearTimeout(wheelGestureTimer);
-      if (direction !== wheelGestureDirection) wheelGestureOpen = false;
-      if (!wheelGestureOpen) {
-        wheelGestureOpen = true;
+      if (event.deltaY === 0) return;
+      const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? innerHeight : 1;
+      const delta = clamp(event.deltaY * unit, -160, 160);
+      const direction = Math.sign(delta);
+      if (direction !== wheelGestureDirection) {
         wheelGestureDirection = direction;
-        advanceFlash(direction);
+        wheelGestureDelta = 0;
+        wheelGestureHandled = false;
       }
-      wheelGestureTimer = setTimeout(() => { wheelGestureOpen = false; }, 180);
+      wheelGestureDelta += delta;
+      scheduleWheelRelease();
+      if (wheelGestureHandled || Math.abs(wheelGestureDelta) < wheelThreshold) return;
+      if (awaitingFirstFlash) {
+        if (direction < 0) return;
+        awaitingFirstFlash = false;
+        startFlash();
+      } else if (flashActive) {
+        advanceFlash(direction);
+      } else return;
+      wheelGestureHandled = true;
+      wheelGestureDelta = 0;
     };
     const preventTouch = (event) => event.preventDefault();
     const rememberTouch = (event) => { touchStartY = event.touches[0]?.clientY || 0; };
@@ -515,12 +500,9 @@
       removeEventListener("touchmove", preventTouch);
       removeEventListener("touchend", finishTouch);
       removeEventListener("keydown", preventKey);
+      resetWheelGesture();
     };
 
-    const revealAll = () => {
-      characters.forEach((character) => character.classList.add("is-typed"));
-      $$("mark", copy).forEach((mark) => mark.classList.add("is-typed"));
-    };
     const startFlash = (direction = 1) => {
       if (!warningTyped) {
         warningTyped = true;
@@ -545,45 +527,27 @@
         else startFlash(direction);
       });
     };
-    const type = () => {
-      if (!typingEnabled) {
-        flashLockPosition = scrollY;
-        waitForFirstFlash();
-        return;
-      }
-      if (reducedMotion) {
-        revealAll();
-        startFlash();
-        return;
-      }
-      characters.forEach((character, index) => {
-        setTimeout(() => {
-          character.classList.add("is-typed");
-          const mark = character.closest("mark");
-          if (mark) mark.classList.add("is-typed");
-          if (index === characters.length - 1) {
-            startFlash();
-          }
-        }, index * 35);
-      });
+    const prepareFirstFlash = () => {
+      flashLockPosition = scrollY;
+      waitForFirstFlash();
     };
 
-    const centerAndType = (frame = 0) => {
+    const centerAndPrepare = (frame = 0) => {
       const rect = copy.getBoundingClientRect();
       const error = rect.top + rect.height / 2 - innerHeight / 2;
       if (Math.abs(error) <= 2 || frame >= 90) {
-        type();
+        prepareFirstFlash();
         return;
       }
       scrollController.moveTo(scrollY + error);
-      requestAnimationFrame(() => centerAndType(frame + 1));
+      requestAnimationFrame(() => centerAndPrepare(frame + 1));
     };
 
     const trigger = () => {
       triggered = true;
       scrollController.lock();
       blockNativeInput();
-      centerAndType();
+      centerAndPrepare();
     };
 
     const check = () => {
@@ -826,7 +790,8 @@
             }
             card.style.opacity = visible ? "1" : "0";
             card.style.visibility = visible ? "visible" : "hidden";
-            card.style.pointerEvents = Math.abs(cardProgress) < .35 ? "auto" : "none";
+            const hoverCardVisible = visible && card.classList.contains("work-project-hoverable");
+            card.style.pointerEvents = hoverCardVisible || Math.abs(cardProgress) < .35 ? "auto" : "none";
             if (visible) nextVisible.add(index);
           });
         }
@@ -1133,7 +1098,7 @@
   const smoothScroll = initSmoothScroll();
   initLineField();
   initBinaryObservers();
-  initWarningTyping(smoothScroll);
+  initWarningSequence(smoothScroll);
   initPerspectiveRails(smoothScroll);
   initSmileyTrail();
   initWorkSection();
