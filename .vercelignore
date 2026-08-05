@@ -1,0 +1,5 @@
+.DS_Store
+backups/
+portfolio-before-hero-redesign-*.tar.gz
+test-results/
+vendor/
