@@ -236,10 +236,10 @@
 .warning-content{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%)}
 .warning-label-row{display:flex;justify-content:space-between;margin:0;padding:0 calc(68 * var(--story-unit));font:400 calc(24 * var(--story-unit))/.973 "SUIT",Arial,sans-serif;letter-spacing:0}
 .warning-label-row p{margin:0;white-space:nowrap}
-.warning-cursor{position:absolute;top:calc(78 * var(--story-unit));left:calc(694 * var(--story-unit));width:calc(217 * var(--story-unit));height:calc(200 * var(--story-unit))}
+.warning-cursor{position:absolute;top:calc(26 * var(--story-unit));left:calc(694 * var(--story-unit));width:calc(217 * var(--story-unit));height:calc(200 * var(--story-unit))}
 .warning-cursor img{display:block;width:100%;height:100%;object-fit:contain}
-.warning-headline{margin:calc(173.65 * var(--story-unit)) 0 0 calc(68 * var(--story-unit));width:calc(860 * var(--story-unit));white-space:nowrap;font:800 calc(115 * var(--story-unit))/.86 "SUIT",Arial,sans-serif;letter-spacing:0}
-.warning-subtitle{margin:calc(98 * var(--story-unit)) 0 0 calc(72 * var(--story-unit));white-space:nowrap;font:400 calc(30 * var(--story-unit))/1.43 Pretendard,"Apple SD Gothic Neo",Arial,sans-serif;letter-spacing:-.02em}
+.warning-headline{margin:calc(140.65 * var(--story-unit)) 0 0 calc(68 * var(--story-unit));width:calc(836 * var(--story-unit));white-space:nowrap;font:700 calc(115 * var(--story-unit))/.86 "Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:-.035em}
+.warning-subtitle{margin:calc(78 * var(--story-unit)) 0 0 calc(72 * var(--story-unit));width:calc(444 * var(--story-unit));white-space:nowrap;font:400 calc(50 * var(--story-unit))/1.22 "Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:-.035em}
 .warning-copy.is-flashing .warning-static{visibility:hidden}
 .warning-flash-images{position:absolute;inset:0;display:none;place-items:center;pointer-events:none}
 .warning-copy.is-flashing .warning-flash-images{display:grid}
