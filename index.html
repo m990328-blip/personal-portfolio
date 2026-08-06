@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Antoine Wodniack — freelance creative developer in France.">
   <title>AW - Creative Developer Freelance - France</title>
-  <link rel="stylesheet" href="style.css?v=20260805-50">
+  <link rel="stylesheet" href="style.css?v=20260806-4">
 </head>
 <body>
 <main>
@@ -180,6 +180,8 @@
   </header>
   <div class="chatbot-panel__body">
     <h2>ASK<br>ME</h2>
+    <div class="chatbot-panel__messages" id="chatbot-messages" aria-live="polite"></div>
+    <div class="chatbot-suggestions" id="chatbot-suggestions"></div>
     <form class="chatbot-panel__form">
       <label class="sr-only" for="chatbot-question">질문 입력</label>
       <input id="chatbot-question" type="text" placeholder="TYPE YOUR QUESTION" autocomplete="off">
@@ -190,6 +192,7 @@
 <button class="chatbot-launcher" type="button" aria-label="챗봇 열기" aria-hidden="true" tabindex="-1">
   <img src="images/chat bot.webp" alt="">
 </button>
-<script src="script.js?v=20260805-49"></script>
+<script src="chatbot-data.js?v=20260806-5"></script>
+<script src="script.js?v=20260806-14"></script>
 </body>
 </html>

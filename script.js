@@ -129,6 +129,25 @@
         web: "https://aru-react.vercel.app/onboarding",
         linkLabel: "앱 바로가기",
         plan: "https://www.figma.com/proto/dP1TrvrWnnpwVg8Mz5LjqS/%EC%9D%B4%EB%AF%BC%EC%98%81?node-id=967-5866&viewport=34%2C154%2C0.04&t=19PNm5J5SINDkVwP-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=967%3A2243&page-id=967%3A2242"
+      } : index === 5 ? {
+        name: "SNS Contents",
+        type: "브랜딩 및 제품콘텐츠"
+      } : index === 6 ? {
+        name: "Backyard",
+        type: "공예작품",
+        description: "뒷마당을 개인의 기억과 휴식이 쌓이는 안식처로 해석했습니다. 바쁜 삶 속에서 잃어가는 나만의 공간을 떠올리게 하고자 이 주제를 선택했고, 자연스러운 기억의 온도를 표현하기 위해 천연염색과 손바느질을 활용했습니다."
+      } : index === 12 ? {
+        name: "Doodle Dandelion",
+        type: "공예작품",
+        description: "어디서나 뿌리내리는 민들레를 장소와 형식에 구애받지 않는 낙서에 본인을 투영시켜 비유했습니다. 작은 생각도 자유롭게 표현하는 순간 하나의 창작으로 발전할 수 있다는 가능성을 전하고자 이 주제를 선택했고, 노트 위의 평면적인 낙서가 입체적인 민들레로 뻗어 나오는 형태로 표현했습니다."
+      } : index === 16 ? {
+        name: "Yeongdo Bridge Bag",
+        type: "공예작품",
+        description: "부산과 영도를 처음 연결한 영도다리를, 지역의 시간과 사람을 이어 주는 상징으로 해석했습니다. 도개 중인 과거 사진을 천에 프린팅하고, 닫힌 다리의 모습을 영도다리의 붉은색 실로 손바느질해 서로 다른 시간의 장면을 하나로 이었습니다. 사람과 장소를 연결하는 다리의 의미가 일상 속 이동에서도 이어지도록, 소지품을 담아 함께 움직이는 짐색의 형태로 제작했습니다."
+      } : index === 10 ? {
+        name: "Everleaf",
+        type: "공예작품",
+        description: "식물을 좋아하지만 관리에 어려움을 느끼는 어머니의 모습에서 출발해, 누구나 부담 없이 식물이 주는 편안함을 누릴 수 있는 패브릭 식물 브랜드를 기획했습니다. 생화의 따뜻함은 유지하면서 시들거나 관리할 필요가 없도록 패브릭을 활용했고, 오래도록 곁에 머무는 잎이라는 의미를 담아 ‘Everleaf’라는 이름을 붙였습니다."
       } : stackHoverIndexes.has(index) ? {
         name: `Project ${String(index + 1).padStart(2, "0")}`,
         type: "개인 프로젝트",
@@ -136,7 +155,8 @@
       } : null;
       const planLink = hoverDetails?.plan ? `<a href="${hoverDetails.plan}" target="_blank" rel="noopener noreferrer">기획서 바로가기</a>` : "";
       const projectLinks = hoverDetails?.web ? `<div class="work-project-links"><a href="${hoverDetails.web}" target="_blank" rel="noopener noreferrer">${hoverDetails.linkLabel}</a>${planLink}</div>` : "";
-      const featuredHover = hoverDetails ? `<div class="work-project-media">${image}<div class="work-project-hover"><div class="work-project-hover-copy"><h3>${hoverDetails.name}</h3><p class="work-project-type">[ ${hoverDetails.type} ]</p><p class="work-project-description">${hoverDetails.description}</p>${projectLinks}</div></div></div>` : image;
+      const descriptionHtml = hoverDetails?.description ? `<p class="work-project-description">${hoverDetails.description}</p>` : "";
+      const featuredHover = hoverDetails ? `<div class="work-project-media">${image}<div class="work-project-hover"><div class="work-project-hover-copy"><h3>${hoverDetails.name}</h3><p class="work-project-type">[ ${hoverDetails.type} ]</p>${descriptionHtml}${projectLinks}</div></div></div>` : image;
       return `<article class="work-project work-project-${shape}${featured}${stacked}${gridStack}"${stackData} style="--card-size:${size};--card-y:${y}${stackStyle}"><div class="work-project-inner">${featuredHover}<footer><span>${title}</span><span>#${hash} - ${String(index + 1).padStart(4, "0")}/${String(projectMedia.length).padStart(2, "0")}</span></footer></div></article>`;
     }).join("");
     const workHoldVh = 60;
@@ -1057,20 +1077,108 @@
     addEventListener("scroll", update, { passive: true }); addEventListener("resize", update); update();
   }
 
-  function initChatbotLauncher() {
+  function initChatbotLauncher(smoothScroll) {
     const launcher = $(".chatbot-launcher");
     const panel = $(".chatbot-panel");
     const close = $(".chatbot-panel__close", panel);
     const form = $(".chatbot-panel__form", panel);
     const input = $("#chatbot-question", panel);
+    const messages = $("#chatbot-messages", panel);
+    const suggestions = $("#chatbot-suggestions", panel);
     const about = $("#about");
     if (!launcher || !panel || !about) return;
+
+    const QA = Array.isArray(window.CHATBOT_QA) ? window.CHATBOT_QA : [];
+    const SUGGESTIONS = Array.isArray(window.CHATBOT_SUGGESTIONS) ? window.CHATBOT_SUGGESTIONS : [];
+    const FALLBACK = "질문을 조금 더 구체적으로 적어주시면 답변드릴게요. 예를 들어 '포트폴리오 콘셉트', '마샬 프로젝트', '와인 앱', 'AI 활용', '강점' 같은 키워드로 물어봐 주세요.";
+
+    const stripPunct = (str) => (str || "").toLowerCase().replace(/[.,!?~'"()\[\]{}·\-_/]/g, "");
+    const normalize = (str) => stripPunct(str).replace(/\s/g, "");
+
+    // Korean verbs/adjectives conjugate their trailing syllable (바꾼/바꿨/바뀐),
+    // so require only the leading portion of longer words to match — nouns
+    // (콘셉트, 마샬, 리뉴얼 ...) still match in full since they don't inflect.
+    const wordStem = (word) => (word.length >= 4 ? word.slice(0, word.length - 1) : word);
+
+    const findAnswer = (query) => {
+      const norm = normalize(query);
+      if (!norm) return null;
+      let best = null, bestScore = 0;
+      for (const entry of QA) {
+        let score = 0;
+        for (const phrase of entry.keywords || []) {
+          // A short query that literally IS one of the entry's own keyword
+          // phrases (e.g. someone just typing "강점") should resolve to that
+          // entry outright, even though it's too short to clear the normal
+          // cumulative-score threshold on its own.
+          if (normalize(phrase) === norm) score += 20;
+          const words = stripPunct(phrase).split(/\s+/).filter(Boolean);
+          for (const word of words) {
+            const stem = wordStem(word);
+            if (stem.length >= 2 && norm.includes(stem)) score += stem.length;
+          }
+        }
+        if (score > bestScore) { bestScore = score; best = entry; }
+      }
+      return bestScore >= 4 ? best : null;
+    };
+
+    const scrollToBottom = () => { messages.scrollTop = messages.scrollHeight; };
+
+    const addMessage = (text, who) => {
+      panel.classList.add("has-messages");
+      const bubble = document.createElement("div");
+      bubble.className = "chatbot-msg chatbot-msg--" + who;
+      bubble.textContent = text;
+      messages.appendChild(bubble);
+      scrollToBottom();
+      return bubble;
+    };
+
+    const addSuggestions = () => {
+      if (!suggestions || !SUGGESTIONS.length) return;
+      SUGGESTIONS.forEach((id) => {
+        const entry = QA.find((item) => item.id === id);
+        if (!entry) return;
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.textContent = entry.label || entry.category;
+        chip.addEventListener("click", () => ask(entry.label || entry.category, entry));
+        suggestions.appendChild(chip);
+      });
+    };
+
+    const respond = (matched) => {
+      const typing = addMessage("", "bot");
+      typing.classList.add("is-typing");
+      typing.innerHTML = "<i></i><i></i><i></i>";
+      setTimeout(() => {
+        typing.classList.remove("is-typing");
+        typing.textContent = matched ? matched.answer : FALLBACK;
+        scrollToBottom();
+      }, 420);
+    };
+
+    const ask = (text, matchedOverride) => {
+      const trimmed = text.trim();
+      if (!trimmed) return;
+      addMessage(trimmed, "user");
+      respond(matchedOverride || findAnswer(trimmed));
+    };
+
     const setOpen = (open) => {
+      const wasOpen = panel.classList.contains("is-open");
       panel.classList.toggle("is-open", open);
       panel.setAttribute("aria-hidden", String(!open));
       launcher.setAttribute("aria-expanded", String(open));
       launcher.setAttribute("aria-label", open ? "챗봇 닫기" : "챗봇 열기");
-      if (open) requestAnimationFrame(() => input?.focus());
+      if (open) {
+        requestAnimationFrame(() => input?.focus());
+        if (suggestions && !suggestions.childElementCount) addSuggestions();
+        if (!wasOpen) smoothScroll?.lock();
+      } else if (wasOpen) {
+        smoothScroll?.unlock();
+      }
     };
     const update = () => {
       const visible = about.getBoundingClientRect().top <= 0;
@@ -1084,7 +1192,27 @@
     panel.id = "chatbot-panel";
     launcher.addEventListener("click", () => setOpen(!panel.classList.contains("is-open")));
     close?.addEventListener("click", () => { setOpen(false); launcher.focus(); });
-    form?.addEventListener("submit", (event) => event.preventDefault());
+    // Any scroll gesture over the panel (header, empty space, input area — not
+    // just the message list) should scroll the chat's own content, never the
+    // page underneath the fixed panel.
+    panel.addEventListener("wheel", (event) => {
+      event.preventDefault();
+      messages.scrollTop += event.deltaY;
+    }, { passive: false });
+    // Touch-drag scrolling (mobile) isn't driven by the wheel-based smooth
+    // scroll above, so block it separately whenever it starts outside the
+    // panel while the chat is open.
+    document.addEventListener("touchmove", (event) => {
+      if (panel.classList.contains("is-open") && !panel.contains(event.target)) {
+        event.preventDefault();
+      }
+    }, { passive: false });
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!input) return;
+      ask(input.value);
+      input.value = "";
+    });
     addEventListener("keydown", (event) => {
       if (event.key === "Escape" && panel.classList.contains("is-open")) { setOpen(false); launcher.focus(); }
     });
@@ -1105,5 +1233,5 @@
   initSkillsSection();
   initHistory(smoothScroll);
   initContact();
-  initChatbotLauncher();
+  initChatbotLauncher(smoothScroll);
 })();
