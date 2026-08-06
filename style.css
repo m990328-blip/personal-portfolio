@@ -231,7 +231,7 @@
 .story-center .section-label{height:calc(38 * var(--story-unit));background:var(--ink);color:#FFFAE4;font:800 calc(20 * var(--story-unit))/normal "SUIT",sans-serif;letter-spacing:0}
 .story-center .section-label:first-child{color:#FFFAE4}
 .warning-copy{position:relative;height:var(--center-width);padding:0;background:var(--red);color:var(--ink);text-align:center;font:400 calc(30 * var(--story-unit))/1.5 Pretendard,"Apple SD Gothic Neo",Arial,sans-serif;letter-spacing:0}
-.warning-copy p{position:absolute;left:0;width:100%;margin:0}.warning-main{top:22%}.warning-translation{top:43%;padding:0 5%;font:700 calc(26 * var(--story-unit))/1.35 "Fraktion Mono",monospace;letter-spacing:.025em}.warning-action{top:66%}.warning-action-en{top:75%;font:700 calc(26 * var(--story-unit))/1 "Fraktion Mono",monospace;letter-spacing:.06em}.warning-copy mark{padding:0 .08em;background:var(--ink);color:#FFFAE4}
+.warning-copy p{position:absolute;left:0;width:100%;margin:0}.warning-main{top:22%}.warning-action{top:43%}.warning-translation{top:55%;padding:0 5%;font:700 calc(26 * var(--story-unit))/1.35 "Fraktion Mono",monospace;letter-spacing:.025em}.warning-action-en{top:78%;font:700 calc(26 * var(--story-unit))/1 "Fraktion Mono",monospace;letter-spacing:.06em}.warning-copy mark{padding:0 .08em;background:var(--ink);color:#FFFAE4}
 .warning-copy.is-flashing>p{visibility:hidden}
 .warning-flash-images{position:absolute;inset:0;display:none;place-items:center;pointer-events:none}
 .warning-copy.is-flashing .warning-flash-images{display:grid}
