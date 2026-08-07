@@ -109,7 +109,7 @@
         ? `<video src="${src}" aria-label="${title}" autoplay muted loop playsinline preload="metadata"></video>`
         : `<img src="${src}" alt="${title}" loading="${loading}"${priority} decoding="async">`;
       const hoverDetails = index === 0 ? {
-        name: "Mashall",
+        name: "Marshall",
         type: "팀 프로젝트",
         description: "기존의 제품 중심 구조를 브랜드 중심으로 전환하고, 브랜드의 탄생부터 현재까지의<br>이야기를 하나의 스크롤 서사로 구성했습니다. 이를 통해 사용자가 제품을 탐색하는 것을<br>넘어 마샬의 철학과 헤리티지를 직접 경험하도록 기획했습니다.",
         web: "https://marshall-rebrand.vercel.app/",
