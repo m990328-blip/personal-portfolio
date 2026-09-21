@@ -6,10 +6,10 @@
   const clamp = (value, min = 0, max = 1) => Math.max(min, Math.min(max, value));
 
   const projectMedia = [
-    ["Marshall 1962 Web Design", "images/work/project-17.webp", "landscape"],
-    ["Vinery App Design", "images/work/project-19.webp", "landscape"],
-    ["Aru App Design", "images/work/project-18.webp", "landscape"],
-    ["Hellobot App Renewal", "images/work/헬로우봇 리뉴얼.jpg", "landscape"],
+    ["Marshall 1962 Web Design", "images/work/project-17.webp", "landscape", "2026.06–07"],
+    ["Vinery App Design", "images/work/project-19.webp", "landscape", "2026.07–08"],
+    ["Aru App Design", "images/work/project-18.webp", "landscape", "2026.02–05"],
+    ["Hellobot App Renewal", "images/work/헬로우봇 리뉴얼.jpg", "landscape", "2026.08.21–23"],
     ["SNS Content Design 1", "images/work/P20250912_142421000_947D8358-CEBB-4300-811D-732A6A5E4DB4.webp", "portrait"],
     ["SNS Content Design 2", "images/work/V20250911_165336000_0BE644DC-2C4B-4185-9FA7-C80B34C57ACC.MP4", "portrait"],
     ["SNS Content Design 3", "images/work/P20250918_175701000_D40DA5A7-34B8-4B68-A363-1F54AD2D95FA.webp", "portrait"],
@@ -66,13 +66,12 @@
       { id: "grid-remaining", indexes: [8, 9, 10, 11, 18, 19, 20, 21, 22] }
     ];
     const stackHoverIndexes = new Set([6, 7, 11, 13, 17]);
-    projectScene.innerHTML = projectMedia.map(([title, src, shape], index) => {
+    projectScene.innerHTML = projectMedia.map(([title, src, shape, projectDate], index) => {
       const stackDefinition = stackDefinitions.find(({ indexes }) => indexes.includes(index));
       const stackIndex = stackDefinition ? stackDefinition.indexes.indexOf(index) : -1;
       const stackCount = stackDefinition?.indexes.length || 0;
       const size = index < 4 ? .87 : stackCount === 9 ? 1 : stackIndex >= 0 ? .78 : .5 + ((index * 37) % 50) / 100;
       const y = stackIndex >= 0 ? 0 : (.5 + ((index * 53) % 50) / 100) * (index % 2 ? -1 : 1);
-      const hash = (index * 7919 % 1679616).toString(36).padStart(4, "0").slice(0, 4);
       const hoverable = index < 4 || stackHoverIndexes.has(index);
       const featured = index < 4 ? " work-project-featured" : hoverable ? " work-project-hoverable" : "";
       const stacked = stackIndex >= 0 ? " work-project-stack" : "";
@@ -164,7 +163,9 @@
       const projectLinks = webLink || planLink ? `<div class="work-project-links">${webLink}${planLink}</div>` : "";
       const descriptionHtml = hoverDetails?.description ? `<p class="work-project-description">${hoverDetails.description}</p>` : "";
       const featuredHover = hoverDetails ? `<div class="work-project-media">${image}<div class="work-project-hover"><div class="work-project-hover-copy"><h3>${hoverDetails.name}</h3><p class="work-project-type">[ ${hoverDetails.type} ]</p>${descriptionHtml}${projectLinks}</div></div></div>` : image;
-      return `<article class="work-project work-project-${shape}${featured}${stacked}${gridStack}"${stackData} style="--card-size:${size};--card-y:${y}${stackStyle}"><div class="work-project-inner">${featuredHover}<footer><span>${title}</span><span>#${hash} - ${String(index + 1).padStart(4, "0")}/${String(projectMedia.length).padStart(2, "0")}</span></footer></div></article>`;
+      const projectOrder = `${String(index + 1).padStart(4, "0")}/${String(projectMedia.length).padStart(2, "0")}`;
+      const projectMeta = projectDate ? `${projectDate} - ${projectOrder}` : projectOrder;
+      return `<article class="work-project work-project-${shape}${featured}${stacked}${gridStack}"${stackData} style="--card-size:${size};--card-y:${y}${stackStyle}"><div class="work-project-inner">${featuredHover}<footer><span>${title}</span><span>${projectMeta}</span></footer></div></article>`;
     }).join("");
     const workHoldVh = 60;
     $(".work-showcase").style.height = `calc(${projectMedia.length * 65}lvh + ${workHoldVh}lvh)`;
