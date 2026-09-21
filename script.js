@@ -9,6 +9,7 @@
     ["Marshall 1962 Web Design", "images/work/project-17.webp", "landscape"],
     ["Vinery App Design", "images/work/project-19.webp", "landscape"],
     ["Aru App Design", "images/work/project-18.webp", "landscape"],
+    ["Hellobot App Renewal", "images/work/헬로우봇 리뉴얼.jpg", "landscape"],
     ["SNS Content Design 1", "images/work/P20250912_142421000_947D8358-CEBB-4300-811D-732A6A5E4DB4.webp", "portrait"],
     ["SNS Content Design 2", "images/work/V20250911_165336000_0BE644DC-2C4B-4185-9FA7-C80B34C57ACC.MP4", "portrait"],
     ["SNS Content Design 3", "images/work/P20250918_175701000_D40DA5A7-34B8-4B68-A363-1F54AD2D95FA.webp", "portrait"],
@@ -58,22 +59,22 @@
 
     const projectScene = $(".work-project-scene");
     const stackDefinitions = [
-      { id: "triple-craft", indexes: [3, 4, 5] },
-      { id: "pair-4-11", indexes: [13, 6] },
-      { id: "pair-9-10", indexes: [11, 12] },
-      { id: "triple-12-14", indexes: [14, 15, 16] },
-      { id: "grid-remaining", indexes: [7, 8, 9, 10, 17, 18, 19, 20, 21] }
+      { id: "triple-craft", indexes: [4, 5, 6] },
+      { id: "pair-4-11", indexes: [14, 7] },
+      { id: "pair-9-10", indexes: [12, 13] },
+      { id: "triple-12-14", indexes: [15, 16, 17] },
+      { id: "grid-remaining", indexes: [8, 9, 10, 11, 18, 19, 20, 21, 22] }
     ];
-    const stackHoverIndexes = new Set([5, 6, 10, 12, 16]);
+    const stackHoverIndexes = new Set([6, 7, 11, 13, 17]);
     projectScene.innerHTML = projectMedia.map(([title, src, shape], index) => {
       const stackDefinition = stackDefinitions.find(({ indexes }) => indexes.includes(index));
       const stackIndex = stackDefinition ? stackDefinition.indexes.indexOf(index) : -1;
       const stackCount = stackDefinition?.indexes.length || 0;
-      const size = index < 3 ? .87 : stackCount === 9 ? 1 : stackIndex >= 0 ? .78 : .5 + ((index * 37) % 50) / 100;
+      const size = index < 4 ? .87 : stackCount === 9 ? 1 : stackIndex >= 0 ? .78 : .5 + ((index * 37) % 50) / 100;
       const y = stackIndex >= 0 ? 0 : (.5 + ((index * 53) % 50) / 100) * (index % 2 ? -1 : 1);
       const hash = (index * 7919 % 1679616).toString(36).padStart(4, "0").slice(0, 4);
-      const hoverable = index < 3 || stackHoverIndexes.has(index);
-      const featured = index < 3 ? " work-project-featured" : hoverable ? " work-project-hoverable" : "";
+      const hoverable = index < 4 || stackHoverIndexes.has(index);
+      const featured = index < 4 ? " work-project-featured" : hoverable ? " work-project-hoverable" : "";
       const stacked = stackIndex >= 0 ? " work-project-stack" : "";
       const gridStack = stackCount === 9 ? " work-project-stack-grid" : "";
       const stackRest = stackCount === 9 ? Array.from({ length: 9 }, (_, position) => {
@@ -129,22 +130,27 @@
         web: "https://aru-react.vercel.app/onboarding",
         linkLabel: "앱 바로가기",
         plan: "https://www.figma.com/proto/dP1TrvrWnnpwVg8Mz5LjqS/%EC%9D%B4%EB%AF%BC%EC%98%81?node-id=967-5866&viewport=34%2C154%2C0.04&t=19PNm5J5SINDkVwP-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=967%3A2243&page-id=967%3A2242"
-      } : index === 5 ? {
+      } : index === 3 ? {
+        name: "Hellobot",
+        type: "개인 프로젝트",
+        description: "헬로우봇의 핵심 기능을 더 쉽고 명확하게 사용할 수 있도록 정보 구조와 사용자 흐름을 재정비했습니다.<br>사용자가 필요한 기능을 자연스럽게 발견하고 대화에 집중할 수 있도록 화면 구성과<br>인터랙션을 개선한 앱 리뉴얼 프로젝트입니다.",
+        plan: "https://www.figma.com/proto/dP1TrvrWnnpwVg8Mz5LjqS/%EC%9D%B4%EB%AF%BC%EC%98%81?node-id=1522-831&viewport=-4594%2C-3988%2C0.25&t=aUHPo9NVtuoSECbQ-1&scaling=scale-down-width&content-scaling=fixed&starting-point-node-id=1522%3A831&show-proto-sidebar=1&page-id=1393%3A2"
+      } : index === 6 ? {
         name: "SNS Contents",
         type: "브랜딩 및 제품콘텐츠"
-      } : index === 6 ? {
+      } : index === 7 ? {
         name: "Backyard",
         type: "공예작품",
         description: "뒷마당을 개인의 기억과 휴식이 쌓이는 안식처로 해석했습니다. 바쁜 삶 속에서 잃어가는 나만의 공간을 떠올리게 하고자 이 주제를 선택했고, 자연스러운 기억의 온도를 표현하기 위해 천연염색과 손바느질을 활용했습니다."
-      } : index === 12 ? {
+      } : index === 13 ? {
         name: "Doodle Dandelion",
         type: "공예작품",
         description: "어디서나 뿌리내리는 민들레를 장소와 형식에 구애받지 않는 낙서에 본인을 투영시켜 비유했습니다. 작은 생각도 자유롭게 표현하는 순간 하나의 창작으로 발전할 수 있다는 가능성을 전하고자 이 주제를 선택했고, 노트 위의 평면적인 낙서가 입체적인 민들레로 뻗어 나오는 형태로 표현했습니다."
-      } : index === 16 ? {
+      } : index === 17 ? {
         name: "Yeongdo Bridge Bag",
         type: "공예작품",
         description: "부산과 영도를 처음 연결한 영도다리를, 지역의 시간과 사람을 이어 주는 상징으로 해석했습니다. 도개 중인 과거 사진을 천에 프린팅하고, 닫힌 다리의 모습을 영도다리의 붉은색 실로 손바느질해 서로 다른 시간의 장면을 하나로 이었습니다. 사람과 장소를 연결하는 다리의 의미가 일상 속 이동에서도 이어지도록, 소지품을 담아 함께 움직이는 짐색의 형태로 제작했습니다."
-      } : index === 10 ? {
+      } : index === 11 ? {
         name: "Everleaf",
         type: "공예작품",
         description: "식물을 좋아하지만 관리에 어려움을 느끼는 어머니의 모습에서 출발해, 누구나 부담 없이 식물이 주는 편안함을 누릴 수 있는 패브릭 식물 브랜드를 기획했습니다. 생화의 따뜻함은 유지하면서 시들거나 관리할 필요가 없도록 패브릭을 활용했고, 오래도록 곁에 머무는 잎이라는 의미를 담아 ‘Everleaf’라는 이름을 붙였습니다."
@@ -153,8 +159,9 @@
         type: "개인 프로젝트",
         description: "프로젝트의 핵심 아이디어와<br>디자인 과정을 담았습니다."
       } : null;
+      const webLink = hoverDetails?.web ? `<a href="${hoverDetails.web}" target="_blank" rel="noopener noreferrer">${hoverDetails.linkLabel}</a>` : "";
       const planLink = hoverDetails?.plan ? `<a href="${hoverDetails.plan}" target="_blank" rel="noopener noreferrer">기획서 바로가기</a>` : "";
-      const projectLinks = hoverDetails?.web ? `<div class="work-project-links"><a href="${hoverDetails.web}" target="_blank" rel="noopener noreferrer">${hoverDetails.linkLabel}</a>${planLink}</div>` : "";
+      const projectLinks = webLink || planLink ? `<div class="work-project-links">${webLink}${planLink}</div>` : "";
       const descriptionHtml = hoverDetails?.description ? `<p class="work-project-description">${hoverDetails.description}</p>` : "";
       const featuredHover = hoverDetails ? `<div class="work-project-media">${image}<div class="work-project-hover"><div class="work-project-hover-copy"><h3>${hoverDetails.name}</h3><p class="work-project-type">[ ${hoverDetails.type} ]</p>${descriptionHtml}${projectLinks}</div></div></div>` : image;
       return `<article class="work-project work-project-${shape}${featured}${stacked}${gridStack}"${stackData} style="--card-size:${size};--card-y:${y}${stackStyle}"><div class="work-project-inner">${featuredHover}<footer><span>${title}</span><span>#${hash} - ${String(index + 1).padStart(4, "0")}/${String(projectMedia.length).padStart(2, "0")}</span></footer></div></article>`;
@@ -733,8 +740,8 @@
       const rank = (group) => {
         const firstCard = cards[group[0]];
         const stackGroup = firstCard.dataset.stackGroup;
-        if (group[0] < 6) return group[0];
-        if (stackGroup) return 6 + stackTimelineOrder.get(stackGroup);
+        if (group[0] < 7) return group[0];
+        if (stackGroup) return 7 + stackTimelineOrder.get(stackGroup);
         return 100 + group[0];
       };
       return rank(groupA) - rank(groupB);
