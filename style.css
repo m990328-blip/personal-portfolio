@@ -51,14 +51,17 @@
 .figma-topbar .is-current:after{position:absolute;right:0;bottom:-1.5px;left:0;z-index:3;height:1.5px;background:var(--red);content:""}.figma-topbar .is-current{position:relative}
 .figma-topbar .contrast{border-right:1px solid var(--ink);font-size:1.3020833vw}.figma-topbar p{margin:0;padding:0 2.0833333vw;font:400 min(.7292vw,14px)/1 "IBM Plex Mono",monospace;white-space:nowrap}
 .figma-hero{display:flex;flex-direction:column;z-index:31;width:100%;height:calc(100svh - 3.6979167vw);min-height:0;margin:0;border:0;background:var(--ink);overflow:visible}
+.figma-hero-curtain{position:absolute;inset:0;z-index:40;background:var(--red);pointer-events:none;will-change:clip-path}.figma-hero:not(.is-intro) .figma-hero-curtain{display:none}
 .figma-hero-name{position:relative;z-index:4;flex:0 0 17.0833333vw;overflow:visible;background:var(--ink)}
 .figma-hero-name h1{position:absolute;inset:0;margin:0;color:var(--red);font-weight:400}
 .figma-hero-name h1 .figma-lee{position:absolute;top:2.2916667vw;left:7.1875vw;font:400 15.1041667vw/1 "Editorial New",serif;letter-spacing:0}
+.figma-hero.is-intro .figma-lee{opacity:0}
 .figma-name-script{position:absolute;z-index:32;top:-1.2322917vw;left:27.6208333vw;display:block;width:66.380vw;height:20.9351vw}
 .figma-name-script>img,.figma-name-trace,.figma-name-trace>svg{position:absolute;inset:0;display:block;width:100%;height:100%}
 .figma-name-script>img{object-fit:fill;opacity:0}
 .figma-name-trace{overflow:visible}
-.figma-name-writing-path{fill:none;stroke:#fff;stroke-width:172;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:10000;stroke-dashoffset:10000;animation:minyoung-write 1.2s .18s linear forwards}
+.figma-name-writing-path{fill:none;stroke:#fff;stroke-width:172;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:10000;stroke-dashoffset:10000}
+.figma-name-script.is-writing .figma-name-writing-path{animation:minyoung-write 1.2s .18s linear forwards}
 .figma-name-script.is-writing>img{animation:minyoung-fill-in .5s ease-out 1.45s forwards}
 .figma-name-script.is-writing .figma-name-trace{animation:minyoung-trace-out .25s ease 1.75s forwards}
 @keyframes minyoung-fill-in{to{opacity:1}}
@@ -69,13 +72,15 @@
 .figma-hero-meta i{justify-content:center;padding:0;font-style:normal;font-size:1.5104167vw;letter-spacing:-.17em;transform:skewX(-14deg)}
 .figma-line-field{position:relative;z-index:1;flex:1 1 auto;width:100%;height:auto;min-height:250px;background:var(--ink)}
 .figma-line-field .wave-line{stroke:var(--red);stroke-width:1px}.figma-line-field:before{background:var(--red)}
+.figma-hero.is-intro .figma-line-field{transform:translateY(100%)}.figma-line-field:before{opacity:0;transition:opacity .25s ease}.figma-line-field.is-interactive:before{opacity:1}
 .figma-code-ticker{position:relative;z-index:3;flex:0 0 3.1770833vw;overflow:hidden;border-top:1.5px solid var(--red);background:var(--ink);color:var(--red);white-space:nowrap}
 .figma-code-track{display:flex;width:max-content;animation:figma-code-scroll 28s linear infinite}.figma-code-ticker span{display:block;flex:none;padding:0 3vw 0 1.1979167vw;font:400 min(.7292vw,14px)/3.125vw "IBM Plex Mono",monospace}
+.figma-hero.is-intro .figma-code-track{animation-play-state:paused}
 .figma-hero-meta p,.figma-code-ticker span{letter-spacing:.04em}
 @keyframes figma-code-scroll{to{transform:translateX(-50%)}}
 @media(max-width:1000px){.figma-topbar{grid-template-columns:repeat(4,1fr) 56px;height:58px}.figma-topbar p{display:none}.figma-topbar .contrast{display:grid}.figma-hero{height:calc(100svh - 58px);min-height:620px}.figma-hero-name{flex-basis:27vw;min-height:205px}.figma-hero-name h1 .figma-lee{top:8%;font-size:21vw}.figma-name-script{top:-2%;left:19%;width:79%;height:139%}.figma-hero-meta{grid-template-columns:1fr 1fr;flex-basis:50px}.figma-hero-meta p:nth-child(2),.figma-hero-meta i{display:none}.figma-line-field{min-height:300px}.figma-code-ticker{flex-basis:48px}.figma-code-ticker span{line-height:44px}}
 @media(max-width:600px){.figma-topbar{grid-template-columns:repeat(4,1fr) 44px}.figma-hero{min-height:560px}.figma-hero-name{flex-basis:38vw;min-height:180px}.figma-hero-name h1 .figma-lee{left:2%;font-size:25vw}.figma-name-script{left:18%;width:82%;height:145%}.figma-hero-meta{grid-template-columns:1fr}.figma-hero-meta p:nth-child(3){display:none}.figma-line-field .wave-line{stroke-width:1.25px}}
-@media(prefers-reduced-motion:reduce){.figma-name-script>img{opacity:1}.figma-name-trace{display:none}}
+@media(prefers-reduced-motion:reduce){.figma-name-script>img{opacity:1}.figma-name-trace{display:none}.figma-hero.is-intro .figma-lee{opacity:1}.figma-hero.is-intro .figma-line-field{transform:none}.figma-hero-curtain{display:none}}
 
 
 /* The about/awards stage uses the same 12-part perspective mapping as the reference. */

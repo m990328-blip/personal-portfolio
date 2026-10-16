@@ -332,14 +332,15 @@
     const noise = new Perlin2D(), lines = [], paths = [];
     const mouse = { x: -10, y: 0, lx: 0, ly: 0, sx: 0, sy: 0, vs: 0, angle: 0, set: false };
     let raf = 0, active = false;
-    const moved = (point, cursor = true) => ({ x: Math.round(point.x * 10) / 10, y: Math.round((point.y + point.waveY + (cursor ? point.cursorY : 0)) * 10) / 10 });
+    const moved = (point, cursor = true) => ({
+      x: Math.round((point.x + point.wave.x + (cursor ? point.cursor.x : 0)) * 10) / 10,
+      y: Math.round((point.y + point.wave.y + (cursor ? point.cursor.y : 0)) * 10) / 10
+    });
     const draw = () => lines.forEach((line, index) => {
       const anchor = moved(line[0], false);
-      let d = `M 0 ${anchor.y}`;
+      let d = `M ${anchor.x} ${anchor.y}`;
       line.forEach((point, pointIndex) => {
         const position = moved(point, pointIndex !== line.length - 1);
-        if (pointIndex === 0) position.x = 0;
-        if (pointIndex === line.length - 1) position.x = holder.clientWidth;
         d += ` L ${position.x} ${position.y}`;
       });
       paths[index].setAttribute("d", d);
@@ -347,11 +348,17 @@
     const setLines = () => {
       lines.splice(0); paths.splice(0); svg.replaceChildren();
       const width = holder.clientWidth, height = holder.clientHeight;
-      const columns = innerWidth > 767 ? 72 : 36, rows = innerWidth > 767 ? 38 : 24;
-      const xGap = width / columns, yGap = height / Math.max(1, rows - 1);
-      for (let y = 0; y < rows; y++) {
+      const xGap = innerWidth > 767 ? 12 : 9, yGap = innerWidth > 767 ? 40 : 32;
+      const totalLines = Math.ceil((width + 160) / xGap), totalPoints = Math.ceil((height + 120) / yGap);
+      const xStart = (width - xGap * totalLines) / 2, yStart = (height - yGap * totalPoints) / 2;
+      for (let x = 0; x <= totalLines; x++) {
         const line = [];
-        for (let x = 0; x <= columns; x++) line.push({ x: xGap * x, y: yGap * y, waveY: 0, cursorY: 0, vy: 0 });
+        for (let y = 0; y <= totalPoints; y++) line.push({
+          x: xStart + xGap * x,
+          y: yStart + yGap * y,
+          wave: { x: 0, y: 0 },
+          cursor: { x: 0, y: 0, vx: 0, vy: 0 }
+        });
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path"); path.setAttribute("class", "wave-line"); svg.appendChild(path); paths.push(path); lines.push(line);
       }
       draw();
@@ -363,25 +370,85 @@
       mouse.sx += (mouse.x - mouse.sx) * .1; mouse.sy += (mouse.y - mouse.sy) * .1;
       const dx = mouse.x - mouse.lx, dy = mouse.y - mouse.ly, speed = Math.hypot(dx, dy); mouse.vs += (speed - mouse.vs) * .1; mouse.vs = Math.min(100, mouse.vs); mouse.lx = mouse.x; mouse.ly = mouse.y; mouse.angle = Math.atan2(dy, dx);
       holder.style.setProperty("--x", `${mouse.sx}px`); holder.style.setProperty("--y", `${mouse.sy}px`);
-      lines.forEach((line) => line.forEach((point, pointIndex) => {
-        const n = noise.noise((point.x + time * .01) * .0016, (point.y + time * .004) * .002); point.waveY = n * 2.2;
-        const endpoint = pointIndex === 0 || pointIndex === line.length - 1;
-        if (endpoint) { point.waveY = 0; point.cursorY = 0; point.vy = 0; }
+      lines.forEach((line) => line.forEach((point) => {
+        const movement = noise.noise((point.x + time * .015) * .002, (point.y + time * .006) * .0015) * 10;
+        point.wave.x = Math.cos(movement) * 26;
+        point.wave.y = Math.sin(movement) * 12;
         const px = point.x - mouse.sx, py = point.y - mouse.sy, distance = Math.hypot(px, py), radius = Math.max(175, mouse.vs);
-        if (!endpoint && distance < radius) {
-          const force = (1 - distance / radius) ** 2;
-          const direction = Math.abs(py) < 1 ? (point.y < holder.clientHeight / 2 ? -1 : 1) : Math.sign(py);
-          point.vy += direction * force * (1.2 + mouse.vs * .035);
+        if (holder.classList.contains("is-interactive") && distance < radius) {
+          const force = Math.cos(distance * .001) * (1 - distance / radius);
+          point.cursor.vx += Math.cos(mouse.angle) * force * radius * mouse.vs * .00065;
+          point.cursor.vy += Math.sin(mouse.angle) * force * radius * mouse.vs * .00065;
         }
-        point.vy += -point.cursorY * .018;
-        point.vy *= .88;
-        point.cursorY = clamp(point.cursorY + point.vy, -64, 64);
+        point.cursor.vx += -point.cursor.x * .005;
+        point.cursor.vy += -point.cursor.y * .005;
+        point.cursor.vx *= .925;
+        point.cursor.vy *= .925;
+        point.cursor.x = clamp(point.cursor.x + point.cursor.vx * 2, -100, 100);
+        point.cursor.y = clamp(point.cursor.y + point.cursor.vy * 2, -100, 100);
       }));
       draw(); raf = requestAnimationFrame(tick);
     };
     const start = () => { if (active && !document.hidden && !raf) raf = requestAnimationFrame(tick); };
     new IntersectionObserver(([entry]) => { active = entry.isIntersecting; if (active) start(); else { cancelAnimationFrame(raf); raf = 0; } }, { rootMargin: "80px" }).observe(holder);
     resize(); addEventListener("resize", resize); addEventListener("pointermove", pointer, { passive: true }); document.addEventListener("visibilitychange", start);
+  }
+
+  function initHeroIntro() {
+    const hero = $(".figma-hero"), holder = $(".figma-line-field", hero);
+    if (!hero || !holder) return;
+    const name = $(".figma-name-script", hero), lee = $(".figma-lee", hero), meta = $(".figma-hero-meta", hero);
+    const ticker = $(".figma-code-ticker", hero), curtain = $(".figma-hero-curtain", hero), paths = $$(".wave-line", holder);
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    name?.classList.remove("is-writing");
+    const finish = () => {
+      hero.classList.remove("is-intro");
+      hero.classList.add("is-ready");
+      name?.classList.add("is-writing");
+    };
+    const activate = () => holder.classList.add("is-interactive");
+    if (reduced || !Element.prototype.animate) { finish(); activate(); return; }
+
+    const easing = "cubic-bezier(.16,1,.3,1)";
+    paths.forEach((path, index) => {
+      const length = Math.max(1, path.getTotalLength());
+      const edgeDistance = Math.min(index, paths.length - 1 - index);
+      const maxEdgeDistance = Math.max(1, Math.floor((paths.length - 1) / 2));
+      path.style.strokeDasharray = String(length);
+      path.style.strokeDashoffset = String(length);
+      const drawing = path.animate(
+        [{ strokeDashoffset: length }, { strokeDashoffset: 0 }],
+        { duration: 2300, delay: 350 + edgeDistance / maxEdgeDistance * 500, easing, fill: "forwards" }
+      );
+      drawing.finished.then(() => {
+        path.style.strokeDasharray = "none";
+        path.style.strokeDashoffset = "0";
+        drawing.cancel();
+      }).catch(() => {});
+    });
+    curtain?.animate(
+      [{ clipPath: "inset(0 0 0 0)" }, { clipPath: "inset(0 0 100% 0)" }],
+      { duration: 1050, easing: "cubic-bezier(.87,0,.13,1)", fill: "forwards" }
+    );
+    holder.animate(
+      [{ transform: "translateY(100%)" }, { transform: "translateY(0)" }],
+      { duration: 1350, easing, fill: "forwards" }
+    );
+    lee?.animate(
+      [{ opacity: 0, transform: "translateY(-55%) scale(.98)" }, { opacity: 1, transform: "translateY(0) scale(1)" }],
+      { duration: 900, delay: 720, easing, fill: "forwards" }
+    );
+    meta?.animate(
+      [{ clipPath: "inset(0 100% 0 0)", transform: "translateY(45%)" }, { clipPath: "inset(0)", transform: "translateY(0)" }],
+      { duration: 760, delay: 1050, easing, fill: "forwards" }
+    );
+    ticker?.animate(
+      [{ clipPath: "inset(100% 0 0)", transform: "translateY(100%)" }, { clipPath: "inset(0)", transform: "translateY(0)" }],
+      { duration: 700, delay: 1450, easing, fill: "forwards" }
+    );
+    setTimeout(() => name?.classList.add("is-writing"), 900);
+    setTimeout(finish, 2950);
+    setTimeout(activate, 3200);
   }
 
   function initHeroTitle() {
@@ -1233,6 +1300,7 @@
   initHeader();
   const smoothScroll = initSmoothScroll();
   initLineField();
+  initHeroIntro();
   initBinaryObservers();
   initWarningSequence(smoothScroll);
   initPerspectiveRails(smoothScroll);
